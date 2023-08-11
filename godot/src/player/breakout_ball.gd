@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal out_of_bound
 
 @export var speed := 300
+@export var spin_angle := PI/8
 
 @onready var timer := $OutOfBoundTimer
 
@@ -19,6 +20,15 @@ func _physics_process(delta):
 		var collision = get_last_slide_collision()
 		var n = collision.get_normal()
 		motion = motion.bounce(n)
+		
+		var collider = collision.get_collider()
+		if collider is BreakoutBlock:
+			collider.remove_block()
+		
+		if collider is BreakoutPlayer:
+			var spin_dir = sign(collider.velocity.x)
+			motion = motion.rotated(spin_angle * spin_dir)
+
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	timer.start()

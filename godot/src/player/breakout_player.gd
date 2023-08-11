@@ -1,3 +1,4 @@
+class_name BreakoutPlayer
 extends CharacterBody2D
 
 @export var ball_scene: PackedScene
@@ -22,7 +23,6 @@ func _physics_process(delta):
 	velocity = Vector2(motion, 0) * speed
 	
 	move_and_slide()
-
 
 func _on_input_just_pressed(ev: InputEvent):
 	if ev.is_action_pressed("shot") and active_ball:
