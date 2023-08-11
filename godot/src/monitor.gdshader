@@ -155,34 +155,34 @@ void fragment()
 		text.a = 1.0;
 	}
 	
-	if (enable_glitch) {
-		float enable_shift = float(randomf(trunc( TIME * shake_speed )) < shake_rate);
-		vec2 fixed_uv = SCREEN_UV;
-		fixed_uv.x += (
-			randomf(
-				( trunc( SCREEN_UV.y * shake_block_size ) / shake_block_size )
-			+	TIME
-			) - 0.5
-		) * shake_power * enable_shift;
-
-		vec4 pixel_color = textureLod( SCREEN_TEXTURE, fixed_uv, 0.0 );
-		text.r = mix(
-			pixel_color.r,
-			textureLod( SCREEN_TEXTURE, fixed_uv + vec2( shake_color_rate, 0.0 ), 0.0 ).r,
-			enable_shift
-		);
-		text.b = mix(
-			pixel_color.b,
-			textureLod( SCREEN_TEXTURE, fixed_uv + vec2( -shake_color_rate, 0.0 ), 0.0 ).b,
-			enable_shift
-		);
-	}
-	
 	float r = text.r;
 	float g = text.g;
 	float b = text.b;
 	
 	uv = warp(UV);
+	
+	if (enable_glitch) {
+		float enable_shift = float(randomf(trunc( TIME * shake_speed )) < shake_rate);
+		vec2 fixed_uv = warp(SCREEN_UV);
+		fixed_uv.x += (
+			randomf(
+				( trunc( warp(SCREEN_UV).y * shake_block_size ) / shake_block_size )
+			+	TIME
+			) - 0.5
+		) * shake_power * enable_shift;
+
+		vec4 pixel_color = textureLod( SCREEN_TEXTURE, fixed_uv, 0.0 );
+		r = mix(
+			pixel_color.r,
+			textureLod( SCREEN_TEXTURE, fixed_uv + vec2( shake_color_rate, 0.0 ), 0.0 ).r,
+			enable_shift
+		);
+		b = mix(
+			pixel_color.b,
+			textureLod( SCREEN_TEXTURE, fixed_uv + vec2( -shake_color_rate, 0.0 ), 0.0 ).b,
+			enable_shift
+		);
+	}
 	
 	// CRT monitors don't have pixels but groups of red, green and blue dots or lines, called grille. We isolate the texture's color channels 
 	// and divide it up in 3 offsetted lines to show the red, green and blue colors next to each other, with a small black gap between.

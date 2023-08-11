@@ -29,9 +29,9 @@ shader_parameter/warp_amount = 0.8
 shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.5
-shader_parameter/enable_glitch = false
+shader_parameter/enable_glitch = true
 shader_parameter/shake_power = 0.04
-shader_parameter/shake_rate = 0.121
+shader_parameter/shake_rate = 0.5
 shader_parameter/shake_speed = 5.0
 shader_parameter/shake_block_size = 20.0
 shader_parameter/shake_color_rate = 0.01
@@ -39,9 +39,10 @@ shader_parameter/shake_color_rate = 0.01
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvwcc"]
 size = Vector2(34, 700)
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("score_label")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("score_label", "screen")]
 script = ExtResource("1_telmv")
 score_label = NodePath("CanvasLayer/MarginContainer/Score")
+screen = NodePath("CanvasLayer/Screen")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -58,7 +59,7 @@ theme_override_constants/margin_right = 50
 layout_mode = 2
 text = "__SCORE__"
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+[node name="Screen" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_482hd")
 anchors_preset = 15
 anchor_right = 1.0
