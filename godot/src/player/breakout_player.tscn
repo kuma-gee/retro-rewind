@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2eg4xfv7ro3l"]
+
+[ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="1_dij3c"]
+[ext_resource type="Script" path="res://src/player/breakout_player.gd" id="1_nbnne"]
+[ext_resource type="PackedScene" uid="uid://cxqsgshr7uohb" path="res://src/player/breakout_ball.tscn" id="2_1revq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q7cjd"]
+size = Vector2(60, 10)
+
+[node name="BreakoutPlayer" type="CharacterBody2D" node_paths=PackedStringArray("ball_remote")]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_nbnne")
+ball_scene = ExtResource("2_1revq")
+ball_remote = NodePath("Marker2D/RemoteTransform2D")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -30.0
+offset_top = -5.0
+offset_right = 30.0
+offset_bottom = 5.0
+
+[node name="Input" type="Node" parent="."]
+script = ExtResource("1_dij3c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_q7cjd")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, -15)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Marker2D"]
+update_rotation = false
+update_scale = false
+
+[connection signal="just_pressed" from="Input" to="." method="_on_input_just_pressed"]

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="##VAR_GAME_NAME"
+config/name="retro-rewind"
 run/main_scene="res://src/game.tscn"
 config/features=PackedStringArray("4.1")
 boot_splash/bg_color=Color(0.101961, 0.101961, 0.101961, 1)
@@ -28,6 +28,9 @@ gdscript/warnings/return_value_discarded=false
 
 [display]
 
+window/size/viewport_width=640
+window/size/viewport_height=640
+window/stretch/mode="canvas_items"
 window/size/width=1920
 window/size/height=1080
 
@@ -76,6 +79,11 @@ move_right={
 dev={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194343,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+}
+shot={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"echo":false,"script":null)
 ]
 }
 

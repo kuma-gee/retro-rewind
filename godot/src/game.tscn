@@ -1,3 +1,78 @@
-[gd_scene format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=5 format=3 uid="uid://di8g8e6s34cik"]
+
+[ext_resource type="Shader" path="res://src/monitor.gdshader" id="1_gcy8o"]
+[ext_resource type="PackedScene" uid="uid://c2eg4xfv7ro3l" path="res://src/player/breakout_player.tscn" id="2_xfgtg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_482hd"]
+shader = ExtResource("1_gcy8o")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.2
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.2
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 4.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.634
+shader_parameter/distort_intensity = 0.005
+shader_parameter/noise_opacity = 0.175
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.01
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.8
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+shader_parameter/enable_glitch = false
+shader_parameter/shake_power = 0.04
+shader_parameter/shake_rate = 0.121
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 20.0
+shader_parameter/shake_color_rate = 0.01
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvwcc"]
+size = Vector2(34, 700)
 
 [node name="Game" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_482hd")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BreakoutPlayer" parent="." instance=ExtResource("2_xfgtg")]
+position = Vector2(323, 518)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 326)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_wvwcc")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2(647, 326)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("RectangleShape2D_wvwcc")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="."]
+position = Vector2(328, -4)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
+shape = SubResource("RectangleShape2D_wvwcc")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="."]
+position = Vector2(328, 643)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
+shape = SubResource("RectangleShape2D_wvwcc")
