@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=7 format=3 uid="uid://di8g8e6s34cik"]
 
 [ext_resource type="Shader" path="res://src/monitor.gdshader" id="1_gcy8o"]
 [ext_resource type="PackedScene" uid="uid://c2eg4xfv7ro3l" path="res://src/player/breakout_player.tscn" id="2_xfgtg"]
+[ext_resource type="Script" path="res://src/player/breakout_block_spawner.gd" id="3_ut677"]
+[ext_resource type="PackedScene" uid="uid://vck3jq1qjvfq" path="res://src/player/breakout_block.tscn" id="4_xxf18"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_482hd"]
 shader = ExtResource("1_gcy8o")
@@ -52,27 +54,25 @@ grow_vertical = 2
 position = Vector2(323, 518)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(0, 326)
+position = Vector2(-2, 326)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_wvwcc")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(647, 326)
+position = Vector2(649, 326)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("RectangleShape2D_wvwcc")
 
 [node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(328, -4)
+position = Vector2(330, -8)
 rotation = 1.5708
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
 shape = SubResource("RectangleShape2D_wvwcc")
 
-[node name="StaticBody2D4" type="StaticBody2D" parent="."]
-position = Vector2(328, 643)
-rotation = 1.5708
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D4"]
-shape = SubResource("RectangleShape2D_wvwcc")
+[node name="BreakoutBlockSpawner" type="Marker2D" parent="."]
+position = Vector2(73, 86)
+script = ExtResource("3_ut677")
+block_scene = ExtResource("4_xxf18")

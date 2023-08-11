@@ -1,6 +1,11 @@
+class_name BreakoutBall
 extends CharacterBody2D
 
+signal out_of_bound
+
 @export var speed := 300
+
+@onready var timer := $OutOfBoundTimer
 
 var motion := Vector2.ZERO
 
@@ -14,3 +19,11 @@ func _physics_process(delta):
 		var collision = get_last_slide_collision()
 		var n = collision.get_normal()
 		motion = motion.bounce(n)
+
+func _on_visible_on_screen_notifier_2d_screen_exited():
+	timer.start()
+
+
+func _on_out_of_bound_timer_timeout():
+	out_of_bound.emit()
+	queue_free()
