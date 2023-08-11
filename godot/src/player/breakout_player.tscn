@@ -19,6 +19,7 @@ offset_left = -30.0
 offset_top = -5.0
 offset_right = 30.0
 offset_bottom = 5.0
+color = Color(0.105882, 0.556863, 0.74902, 1)
 
 [node name="Input" type="Node" parent="."]
 script = ExtResource("1_dij3c")
