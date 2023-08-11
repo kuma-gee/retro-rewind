@@ -12,3 +12,6 @@ func _on_breakout_player_update_score(score):
 func _glitch():
 	var mat = screen.material as ShaderMaterial
 	mat.set_shader_parameter("enable_glitch", true)
+
+func _on_glitch_area_body_entered(body):
+	_glitch()

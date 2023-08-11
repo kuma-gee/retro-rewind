@@ -4,10 +4,12 @@ extends CharacterBody2D
 signal scored(value)
 signal out_of_bound
 
+@export var max_speed := 500
 @export var speed := 300
 @export var spin_angle := PI/8
 
 @onready var timer := $OutOfBoundTimer
+@onready var current_speed = speed
 
 var motion := Vector2.ZERO
 
@@ -16,11 +18,19 @@ func start_move():
 	motion = Vector2.UP.rotated(angle)
 
 func _physics_process(delta):
-	velocity = motion * speed
+	velocity = motion * current_speed
 	if move_and_slide():
 		var collision = get_last_slide_collision()
 		var n = collision.get_normal()
+		
 		motion = motion.bounce(n)
+		if abs(motion.dot(Vector2.UP)) < 0.07:
+			print("too narrow ", motion.normalized().dot(Vector2.LEFT))
+			var angle = motion.angle_to(Vector2.UP)
+			motion = motion.rotated(angle/2)
+		
+		current_speed *= 1.01
+		current_speed = min(current_speed, max_speed)
 		
 		var collider = collision.get_collider()
 		if collider is BreakoutBlock:
@@ -28,7 +38,7 @@ func _physics_process(delta):
 			scored.emit(collider.value)
 		
 		if collider is BreakoutPlayer:
-			var spin_dir = sign(collider.velocity.x)
+			var spin_dir = sign(collider.motion)
 			motion = motion.rotated(spin_angle * spin_dir)
 
 

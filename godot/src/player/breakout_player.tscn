@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q7cjd"]
 size = Vector2(60, 10)
 
-[node name="BreakoutPlayer" type="CharacterBody2D" node_paths=PackedStringArray("ball_remote")]
+[node name="BreakoutPlayer" type="StaticBody2D" node_paths=PackedStringArray("ball_remote")]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_nbnne")

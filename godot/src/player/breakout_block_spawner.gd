@@ -1,6 +1,6 @@
 extends Marker2D
 
-@export var column := 14
+@export var column := 12
 @export var rows := 8
 
 @export var gap := 5
