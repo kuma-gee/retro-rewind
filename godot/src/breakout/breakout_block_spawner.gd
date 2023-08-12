@@ -17,7 +17,7 @@ func _ready():
 func _create_block(x: int, y: int):
 	var block = block_scene.instantiate()
 	block.value = _get_block_value(y)
-	get_tree().current_scene.add_child(block)
+	add_child(block)
 	block.global_position = global_position + Vector2(x * block_width, y * block_height) + Vector2(x * gap, y * gap)
 
 func _get_block_value(row: int):

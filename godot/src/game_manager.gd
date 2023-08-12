@@ -1,5 +1,10 @@
 extends Node
 
+enum Game {
+	BREAKOUT,
+	PACMAN,
+}
+
 @export var score_label: Label
 @export var screen: Control
 
@@ -7,10 +12,10 @@ extends Node
 
 var breakout_score := 0
 var pacman_score := 0
+var current_game = Game.BREAKOUT
 
 func _ready():
 	game_ui.hide()
-	_update_score()
 	
 	if Build.SILENT_WOLF_API:
 		SilentWolf.configure({
@@ -19,13 +24,29 @@ func _ready():
 			"log_level": 1
 		})
 
-		SilentWolf.configure_scores({
-			"open_scene_on_close": "res://scenes/MainPage.tscn"
-		})
+func start_game(game = current_game):
+	game_ui.visible = game != null
+	breakout_score = 0
+	pacman_score = 0
+	_update_score()
+	
+	var scene = _game_path(game)
+	get_tree().change_scene_to_file(scene)
+	current_game = game
+	
 
-func start_game():
-	game_ui.show()
-	get_tree().change_scene_to_file("res://src/breakout/breakout_game.tscn")
+func _game_path(game):
+	match game:
+		Game.BREAKOUT: return "res://src/breakout/breakout_game.tscn"
+		Game.PACMAN: return "res://src/pacman/pacman_game.tscn"
+	
+	return "res://src/game.tscn"
+
+func get_game_name():
+	match current_game:
+		Game.BREAKOUT: return "Breakout"
+		Game.PACMAN: return "Pacman"
+	return "Retro Rewind"
 
 func _update_score():
 	score_label.text = str(breakout_score)

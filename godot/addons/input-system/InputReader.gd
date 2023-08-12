@@ -27,7 +27,7 @@ func handle_input(event: InputEvent):
 
 		action_strength[action] = event.get_action_strength(action)
 
-	if actions.size() > 0:
+	if actions.size() > 0 and not _disabled:
 		_register_action(event, actions[0])
 
 

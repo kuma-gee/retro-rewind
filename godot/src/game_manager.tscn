@@ -66,7 +66,5 @@ grow_vertical = 2
 
 [node name="GlitchTimer" type="Timer" parent="."]
 wait_time = 10.0
-one_shot = true
-autostart = true
 
 [connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]

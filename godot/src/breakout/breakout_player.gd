@@ -7,6 +7,8 @@ extends StaticBody2D
 @export var max_x := 605
 @export var min_x := 35
 
+@export var disable_input = false
+
 @onready var input := $Input
 
 var active_ball
@@ -15,6 +17,8 @@ var motion = 0
 
 func _ready():
 	_spawn_ball.call_deferred()
+	if disable_input:
+		input.disable()
 
 func _spawn_ball():
 	active_ball = ball_scene.instantiate() as BreakoutBall
