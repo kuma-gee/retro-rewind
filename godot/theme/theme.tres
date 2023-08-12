@@ -7,4 +7,5 @@ bg_color = Color(0, 0, 0, 1)
 
 [resource]
 default_font = ExtResource("1_qcbe6")
+default_font_size = 8
 Button/styles/normal = SubResource("1")

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://n0fkvivqoijy"]
+
+[ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="2_i01ga"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3an6k"]
+radius = 1.0
+
+[node name="PacmanPoint" type="Area2D"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3an6k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_i01ga")

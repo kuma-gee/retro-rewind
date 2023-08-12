@@ -1,19 +1,21 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxqsgshr7uohb"]
 
 [ext_resource type="Script" path="res://src/breakout/breakout_ball.gd" id="1_jedt4"]
-[ext_resource type="Shader" path="res://src/breakout/circle.gdshader" id="2_lbwjx"]
+[ext_resource type="Shader" path="res://src/circle.gdshader" id="2_lbwjx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dvtc1"]
 shader = ExtResource("2_lbwjx")
-shader_parameter/radius = 0.15
+shader_parameter/radius = 0.05
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s3vg0"]
-radius = 6.0
+radius = 2.0
 
 [node name="BreakoutBall" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_jedt4")
+max_speed = 300
+speed = 100
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_dvtc1")
@@ -26,6 +28,7 @@ offset_bottom = 20.0
 shape = SubResource("CircleShape2D_s3vg0")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(0.4, 0.4)
 
 [node name="OutOfBoundTimer" type="Timer" parent="."]
 wait_time = 0.5
