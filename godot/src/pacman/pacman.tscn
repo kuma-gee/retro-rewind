@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cn7igr3887vg7"]
+[gd_scene load_steps=9 format=3 uid="uid://cn7igr3887vg7"]
 
 [ext_resource type="Texture2D" uid="uid://c8twmkhb57ytp" path="res://assets/Pacman.png" id="1_on5ru"]
 [ext_resource type="Script" path="res://src/pacman/pacman.gd" id="1_pp57p"]
@@ -7,15 +7,72 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_1r3rd"]
 radius = 8.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jcbnb"]
+
+[sub_resource type="Animation" id="Animation_tghvy"]
+resource_name = "idle"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="Animation" id="Animation_pin4f"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6g3es"]
+_data = {
+"RESET": SubResource("Animation_pin4f"),
+"idle": SubResource("Animation_tghvy")
+}
+
 [node name="Pacman" type="CharacterBody2D"]
+modulate = Color(1, 0.831373, 0.368627, 1)
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_pp57p")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_on5ru")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_1r3rd")
 
 [node name="Input" type="Node" parent="."]
 script = ExtResource("3_kya4o")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_jcbnb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_on5ru")
+hframes = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+libraries = {
+"": SubResource("AnimationLibrary_6g3es")
+}
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

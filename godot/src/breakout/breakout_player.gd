@@ -1,8 +1,6 @@
 class_name BreakoutPlayer
 extends StaticBody2D
 
-signal update_score(score)
-
 @export var ball_scene: PackedScene
 @export var ball_remote: RemoteTransform2D
 @export var speed := 400
@@ -21,10 +19,6 @@ func _ready():
 func _spawn_ball():
 	active_ball = ball_scene.instantiate() as BreakoutBall
 	active_ball.out_of_bound.connect(_spawn_ball)
-	active_ball.scored.connect(func(v):
-		score += v
-		update_score.emit(score)
-	)
 	get_tree().current_scene.add_child(active_ball)
 	ball_remote.remote_path = ball_remote.get_path_to(active_ball)
 

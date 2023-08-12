@@ -1,114 +1,26 @@
-[gd_scene load_steps=9 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=5 format=3 uid="uid://di8g8e6s34cik"]
 
-[ext_resource type="Shader" path="res://src/monitor.gdshader" id="1_gcy8o"]
 [ext_resource type="Script" path="res://src/game.gd" id="1_telmv"]
-[ext_resource type="PackedScene" uid="uid://c2eg4xfv7ro3l" path="res://src/breakout/breakout_player.tscn" id="2_xfgtg"]
-[ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="2_yxqlt"]
-[ext_resource type="Script" path="res://src/breakout/breakout_block_spawner.gd" id="3_ut677"]
-[ext_resource type="PackedScene" uid="uid://vck3jq1qjvfq" path="res://src/breakout/breakout_block.tscn" id="4_xxf18"]
+[ext_resource type="PackedScene" uid="uid://cxxdr4wqyd5je" path="res://src/breakout/breakout_game.tscn" id="5_bhe1c"]
+[ext_resource type="Texture2D" uid="uid://d4lhik8ycdjpl" path="res://assets/Light.png" id="7_4l42h"]
+[ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="8_togkw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_482hd"]
-shader = ExtResource("1_gcy8o")
-shader_parameter/overlay = true
-shader_parameter/scanlines_opacity = 0.2
-shader_parameter/scanlines_width = 0.1
-shader_parameter/grille_opacity = 0.2
-shader_parameter/resolution = Vector2(640, 480)
-shader_parameter/pixelate = true
-shader_parameter/roll = true
-shader_parameter/roll_speed = 4.0
-shader_parameter/roll_size = 15.0
-shader_parameter/roll_variation = 1.634
-shader_parameter/distort_intensity = 0.005
-shader_parameter/noise_opacity = 0.175
-shader_parameter/noise_speed = 5.0
-shader_parameter/static_noise_intensity = 0.06
-shader_parameter/aberration = 0.01
-shader_parameter/brightness = 1.4
-shader_parameter/discolor = true
-shader_parameter/warp_amount = 0.8
-shader_parameter/clip_warp = false
-shader_parameter/vignette_intensity = 0.4
-shader_parameter/vignette_opacity = 0.5
-shader_parameter/enable_glitch = false
-shader_parameter/shake_power = 0.04
-shader_parameter/shake_rate = 0.5
-shader_parameter/shake_speed = 5.0
-shader_parameter/shake_block_size = 20.0
-shader_parameter/shake_color_rate = 0.01
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvwcc"]
-size = Vector2(34, 700)
-
-[node name="Game" type="Node2D" node_paths=PackedStringArray("score_label", "screen")]
+[node name="Game" type="Node2D"]
 script = ExtResource("1_telmv")
-score_label = NodePath("CanvasLayer/MarginContainer/Score")
-screen = NodePath("CanvasLayer/Screen")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.0431373, 0.0431373, 0.0431373, 1)
+position = Vector2(159.5, 120.5)
+scale = Vector2(319, 239)
+texture = ExtResource("8_togkw")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 26.0
-grow_horizontal = 2
-theme = ExtResource("2_yxqlt")
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 20
-
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer"]
-layout_mode = 2
-text = "__SCORE__"
-
-[node name="Screen" type="ColorRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_482hd")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="BreakoutPlayer" parent="." instance=ExtResource("2_xfgtg")]
-position = Vector2(160, 190)
-speed = 200
-max_x = 310
-min_x = 10
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(-9, 326)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("RectangleShape2D_wvwcc")
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2(329, 326)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-shape = SubResource("RectangleShape2D_wvwcc")
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="."]
-position = Vector2(142, -11)
-rotation = 1.5708
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
-shape = SubResource("RectangleShape2D_wvwcc")
-
-[node name="BreakoutBlockSpawner" type="Marker2D" parent="."]
-position = Vector2(39, 41)
-script = ExtResource("3_ut677")
-gap = 2
-block_width = 20
-block_height = 4
-block_scene = ExtResource("4_xxf18")
-
-[node name="GlitchTimer" type="Timer" parent="."]
-wait_time = 10.0
-one_shot = true
-autostart = true
+[node name="Breakout" parent="." instance=ExtResource("5_bhe1c")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 120)
 
-[connection signal="update_score" from="BreakoutPlayer" to="." method="_on_breakout_player_update_score"]
-[connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(333, 130)
+energy = 2.0
+shadow_enabled = true
+texture = ExtResource("7_4l42h")

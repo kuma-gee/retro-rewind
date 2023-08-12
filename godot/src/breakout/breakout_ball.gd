@@ -1,7 +1,6 @@
 class_name BreakoutBall
 extends CharacterBody2D
 
-signal scored(value)
 signal out_of_bound
 
 @export var max_speed := 500
@@ -35,7 +34,7 @@ func _physics_process(delta):
 		var collider = collision.get_collider()
 		if collider is BreakoutBlock:
 			collider.remove_block()
-			scored.emit(collider.value)
+			GameManager.add_breakout_score(collider.value)
 		
 		if collider is BreakoutPlayer:
 			var spin_dir = sign(collider.motion)

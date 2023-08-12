@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://crny5uvk3tm4h"]
+
+[ext_resource type="Script" path="res://src/game_manager.gd" id="1_c0r20"]
+[ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_mhbye"]
+[ext_resource type="Shader" path="res://src/monitor.gdshader" id="2_defhv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vyp5a"]
+shader = ExtResource("2_defhv")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.2
+shader_parameter/scanlines_width = 0.1
+shader_parameter/grille_opacity = 0.2
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 4.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.634
+shader_parameter/distort_intensity = 0.005
+shader_parameter/noise_opacity = 0.175
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.01
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.8
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+shader_parameter/enable_glitch = false
+shader_parameter/shake_power = 0.04
+shader_parameter/shake_rate = 0.5
+shader_parameter/shake_speed = 5.0
+shader_parameter/shake_block_size = 20.0
+shader_parameter/shake_color_rate = 0.01
+
+[node name="GameManager" type="Node" node_paths=PackedStringArray("score_label", "screen")]
+script = ExtResource("1_c0r20")
+score_label = NodePath("CanvasLayer/MarginContainer/Score")
+screen = NodePath("CanvasLayer/Screen")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+theme = ExtResource("1_mhbye")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 20
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+text = "__SCORE__"
+
+[node name="Screen" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_vyp5a")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GlitchTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]
