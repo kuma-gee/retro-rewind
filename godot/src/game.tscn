@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=7 format=3 uid="uid://di8g8e6s34cik"]
 
 [ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_7k3t4"]
 [ext_resource type="Script" path="res://src/game.gd" id="1_telmv"]
 [ext_resource type="LabelSettings" uid="uid://c584vf1vlxhtw" path="res://src/title.tres" id="3_4i8fg"]
 [ext_resource type="PackedScene" uid="uid://cxxdr4wqyd5je" path="res://src/breakout/breakout_game.tscn" id="3_njjs1"]
 [ext_resource type="PackedScene" uid="uid://cyl56bx4nrgug" path="res://src/ranking.tscn" id="3_ywk0a"]
+[ext_resource type="PackedScene" uid="uid://db3xb7nl00n4c" path="res://src/pacman/pacman_game.tscn" id="6_7h76y"]
 
-[node name="Game" type="Control" node_paths=PackedStringArray("title", "ranking")]
+[node name="Game" type="Control" node_paths=PackedStringArray("title", "ranking", "breakout", "pacman")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,39 +16,53 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_7k3t4")
 script = ExtResource("1_telmv")
-title = NodePath("CenterContainer/VBoxContainer/Label")
-ranking = NodePath("CenterContainer/VBoxContainer/GridContainer")
+title = NodePath("CanvasLayer/CenterContainer/VBoxContainer/Label")
+ranking = NodePath("CanvasLayer/CenterContainer/VBoxContainer/GridContainer")
+breakout = NodePath("Breakout")
+pacman = NodePath("PacmanGame")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7k3t4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Breakout"
+label_settings = ExtResource("3_4i8fg")
+horizontal_alignment = 1
+
+[node name="GridContainer" parent="CanvasLayer/CenterContainer/VBoxContainer" instance=ExtResource("3_ywk0a")]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Press to start"
+horizontal_alignment = 1
+
+[node name="Breakout" parent="." instance=ExtResource("3_njjs1")]
+process_mode = 4
+
+[node name="PacmanGame" parent="." instance=ExtResource("6_7h76y")]
+process_mode = 4
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Breakout"
-label_settings = ExtResource("3_4i8fg")
-horizontal_alignment = 1
-
-[node name="GridContainer" parent="CenterContainer/VBoxContainer" instance=ExtResource("3_ywk0a")]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="CenterContainer/VBoxContainer"]
-layout_mode = 2
-text = "Press to start"
-horizontal_alignment = 1
-
-[node name="Breakout" parent="." instance=ExtResource("3_njjs1")]
-modulate = Color(1, 1, 1, 0.392157)
-
-[node name="BreakoutPlayer" parent="Breakout" index="0"]
-disable_input = true
-
-[editable path="Breakout"]
+color = Color(0, 0, 0, 0.392157)

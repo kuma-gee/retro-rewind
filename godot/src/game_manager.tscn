@@ -53,6 +53,7 @@ ranking = NodePath("CanvasLayer/Ranking/Ranking/Ranking")
 end_score = NodePath("CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/EndScore")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 10

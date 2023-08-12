@@ -17,7 +17,7 @@ enum Game {
 @onready var health := hp_container.get_child_count() 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.BREAKOUT
+var current_game := Game.PACMAN
 var player_name := ""
 
 var waiting_continue := false
@@ -100,17 +100,15 @@ func _game_path(game):
 	
 	return "res://src/game.tscn"
 
-func get_game_name():
-	match current_game:
-		Game.BREAKOUT: return "Breakout"
-		Game.PACMAN: return "Pacman"
-	return "Retro Rewind"
-
 func _update_score():
 	score_label.text = str(_get_total_score())
 
 func add_breakout_score(v: int):
 	breakout_score += v
+	_update_score()
+	
+func add_pacman_score(v: int):
+	pacman_score += v
 	_update_score()
 
 func _glitch():

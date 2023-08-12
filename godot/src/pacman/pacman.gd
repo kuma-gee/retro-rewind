@@ -5,7 +5,6 @@ extends CharacterBody2D
 @onready var input: PlayerInput = $Input
 
 var moving
-var score = 0
 
 func _physics_process(delta):
 	if moving != null:
@@ -66,4 +65,4 @@ func _move(dest: Vector2i):
 
 func _on_area_2d_area_entered(area):
 	area.queue_free()
-	score += 1
+	GameManager.add_pacman_score(1)
