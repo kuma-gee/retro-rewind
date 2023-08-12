@@ -1,11 +1,15 @@
 extends CharacterBody2D
 
+@export var move = false
 @export var tilemap: TileMap
 
 var moving
 var local_paths = []
 
 func _process(delta):
+	if not move:
+		return
+	
 	if moving != null:
 		return
 	
