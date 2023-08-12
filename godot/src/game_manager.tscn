@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://crny5uvk3tm4h"]
+[gd_scene load_steps=11 format=3 uid="uid://crny5uvk3tm4h"]
 
 [ext_resource type="Script" path="res://src/game_manager.gd" id="1_c0r20"]
 [ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_mhbye"]
 [ext_resource type="Shader" path="res://src/monitor.gdshader" id="2_defhv"]
+[ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="3_dwsqs"]
+[ext_resource type="Material" uid="uid://dws48v6xay15r" path="res://src/breakout/health.tres" id="3_se5hi"]
+[ext_resource type="Texture2D" uid="uid://bnanaajsbjbi0" path="res://assets/Enter.png" id="5_ec8gh"]
+[ext_resource type="LabelSettings" uid="uid://c584vf1vlxhtw" path="res://src/title.tres" id="5_oa80m"]
+[ext_resource type="Script" path="res://src/Keyboard.gd" id="6_xvtbm"]
+[ext_resource type="PackedScene" uid="uid://cyl56bx4nrgug" path="res://src/ranking.tscn" id="7_ibfye"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vyp5a"]
 shader = ExtResource("2_defhv")
@@ -34,11 +40,17 @@ shader_parameter/shake_speed = 5.0
 shader_parameter/shake_block_size = 20.0
 shader_parameter/shake_color_rate = 0.01
 
-[node name="GameManager" type="Node" node_paths=PackedStringArray("score_label", "screen", "game_ui")]
+[node name="GameManager" type="Node" node_paths=PackedStringArray("score_label", "screen", "hp_container", "game_ui", "gameover_container", "ranking_container", "ranking", "end_score")]
+process_mode = 3
 script = ExtResource("1_c0r20")
-score_label = NodePath("CanvasLayer/MarginContainer/Score")
+score_label = NodePath("CanvasLayer/MarginContainer/HBoxContainer/Score")
 screen = NodePath("CanvasLayer/Screen")
+hp_container = NodePath("CanvasLayer/MarginContainer/HBoxContainer/HpContainer")
 game_ui = NodePath("CanvasLayer/MarginContainer")
+gameover_container = NodePath("CanvasLayer/Gameover")
+ranking_container = NodePath("CanvasLayer/Ranking")
+ranking = NodePath("CanvasLayer/Ranking/Ranking/Ranking")
+end_score = NodePath("CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/EndScore")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -52,9 +64,122 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 20
 
-[node name="Score" type="Label" parent="CanvasLayer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "__SCORE__"
+
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HpContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HpContainer"]
+material = ExtResource("3_se5hi")
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+texture = ExtResource("3_dwsqs")
+stretch_mode = 5
+
+[node name="Gameover" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Gameover"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.392157)
+
+[node name="GameOver" type="CenterContainer" parent="CanvasLayer/Gameover"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -144.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_mhbye")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Gameover/GameOver"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 70
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Gameover"
+label_settings = ExtResource("5_oa80m")
+horizontal_alignment = 1
+
+[node name="EndScore" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Score"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "ENTER to submit"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_ec8gh")
+stretch_mode = 2
+
+[node name="Keyboard" type="GridContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer" node_paths=PackedStringArray("label")]
+layout_mode = 2
+columns = 10
+script = ExtResource("6_xvtbm")
+label = NodePath("../HBoxContainer/Label")
+
+[node name="Ranking" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Ranking"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.392157)
+
+[node name="Ranking" type="CenterContainer" parent="CanvasLayer/Ranking"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_mhbye")
+
+[node name="Ranking" parent="CanvasLayer/Ranking/Ranking" instance=ExtResource("7_ibfye")]
+layout_mode = 2
 
 [node name="Screen" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_vyp5a")
@@ -67,4 +192,5 @@ grow_vertical = 2
 [node name="GlitchTimer" type="Timer" parent="."]
 wait_time = 10.0
 
+[connection signal="submitted" from="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/Keyboard" to="." method="_on_keyboard_submitted"]
 [connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]

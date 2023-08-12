@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dws48v6xay15r"]
+
+[ext_resource type="Shader" path="res://src/circle.gdshader" id="1_sw6yy"]
+
+[resource]
+shader = ExtResource("1_sw6yy")
+shader_parameter/radius = 0.5
