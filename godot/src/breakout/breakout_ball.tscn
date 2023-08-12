@@ -1,10 +1,10 @@
 [gd_scene load_steps=5 format=3 uid="uid://cxqsgshr7uohb"]
 
-[ext_resource type="Script" path="res://src/player/breakout_ball.gd" id="1_ba3g0"]
-[ext_resource type="Shader" path="res://src/player/circle.gdshader" id="1_iro1d"]
+[ext_resource type="Script" path="res://src/breakout/breakout_ball.gd" id="1_jedt4"]
+[ext_resource type="Shader" path="res://src/breakout/circle.gdshader" id="2_lbwjx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dvtc1"]
-shader = ExtResource("1_iro1d")
+shader = ExtResource("2_lbwjx")
 shader_parameter/radius = 0.15
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s3vg0"]
@@ -13,7 +13,7 @@ radius = 6.0
 [node name="BreakoutBall" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_ba3g0")
+script = ExtResource("1_jedt4")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_dvtc1")

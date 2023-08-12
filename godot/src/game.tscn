@@ -2,9 +2,9 @@
 
 [ext_resource type="Shader" path="res://src/monitor.gdshader" id="1_gcy8o"]
 [ext_resource type="Script" path="res://src/game.gd" id="1_telmv"]
-[ext_resource type="PackedScene" uid="uid://c2eg4xfv7ro3l" path="res://src/player/breakout_player.tscn" id="2_xfgtg"]
-[ext_resource type="Script" path="res://src/player/breakout_block_spawner.gd" id="3_ut677"]
-[ext_resource type="PackedScene" uid="uid://vck3jq1qjvfq" path="res://src/player/breakout_block.tscn" id="4_xxf18"]
+[ext_resource type="PackedScene" uid="uid://c2eg4xfv7ro3l" path="res://src/breakout/breakout_player.tscn" id="2_xfgtg"]
+[ext_resource type="Script" path="res://src/breakout/breakout_block_spawner.gd" id="3_ut677"]
+[ext_resource type="PackedScene" uid="uid://vck3jq1qjvfq" path="res://src/breakout/breakout_block.tscn" id="4_xxf18"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_482hd"]
 shader = ExtResource("1_gcy8o")
@@ -74,7 +74,7 @@ grow_vertical = 2
 position = Vector2(323, 518)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(-11, 326)
+position = Vector2(-3, 326)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_wvwcc")

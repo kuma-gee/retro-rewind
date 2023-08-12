@@ -6,6 +6,8 @@ signal update_score(score)
 @export var ball_scene: PackedScene
 @export var ball_remote: RemoteTransform2D
 @export var speed := 400
+@export var max_x := 605
+@export var min_x := 35
 
 @onready var input := $Input
 
@@ -29,6 +31,7 @@ func _spawn_ball():
 func _physics_process(delta):
 	motion = input.get_action_strength("move_right") - input.get_action_strength("move_left")
 	move_local_x(motion * speed * delta)
+	global_position.x = clamp(global_position.x, min_x, max_x)
 
 func _on_input_just_pressed(ev: InputEvent):
 	if ev.is_action_pressed("shot") and active_ball:

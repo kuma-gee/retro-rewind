@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://c2eg4xfv7ro3l"]
 
-[ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="1_dij3c"]
-[ext_resource type="Script" path="res://src/player/breakout_player.gd" id="1_nbnne"]
-[ext_resource type="PackedScene" uid="uid://cxqsgshr7uohb" path="res://src/player/breakout_ball.tscn" id="2_1revq"]
+[ext_resource type="Script" path="res://src/breakout/breakout_player.gd" id="1_hyx73"]
+[ext_resource type="PackedScene" uid="uid://cxqsgshr7uohb" path="res://src/breakout/breakout_ball.tscn" id="2_e4s4j"]
+[ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="3_8m4tx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q7cjd"]
 size = Vector2(60, 10)
@@ -10,8 +10,8 @@ size = Vector2(60, 10)
 [node name="BreakoutPlayer" type="StaticBody2D" node_paths=PackedStringArray("ball_remote")]
 collision_layer = 2
 collision_mask = 3
-script = ExtResource("1_nbnne")
-ball_scene = ExtResource("2_1revq")
+script = ExtResource("1_hyx73")
+ball_scene = ExtResource("2_e4s4j")
 ball_remote = NodePath("Marker2D/RemoteTransform2D")
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -22,7 +22,7 @@ offset_bottom = 5.0
 color = Color(0.105882, 0.556863, 0.74902, 1)
 
 [node name="Input" type="Node" parent="."]
-script = ExtResource("1_dij3c")
+script = ExtResource("3_8m4tx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_q7cjd")
