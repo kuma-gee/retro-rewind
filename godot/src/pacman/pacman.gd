@@ -6,8 +6,19 @@ signal died()
 @export var tilemap: TileMap
 
 @onready var input: PlayerInput = $Input
+@onready var collision := $CollisionShape2D
+
+@onready var orig_modul = modulate
 
 var moving
+var tw
+
+func _ready():
+	collision.disabled = true
+	tw = create_tween()
+	tw.set_loops()
+	tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
+	tw.tween_property(self, "modulate", orig_modul, 0.5)
 
 func _physics_process(delta):
 	if moving != null:
@@ -30,3 +41,9 @@ func _on_area_2d_area_entered(area):
 func killed():
 	died.emit()
 	queue_free()
+
+func _on_invincibility_timer_timeout():
+	tw.kill()
+	modulate = orig_modul
+	collision.disabled = false
+	

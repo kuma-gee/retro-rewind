@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://7fl2mknw74t5"]
+
+[ext_resource type="PackedScene" uid="uid://bkoohkb4probt" path="res://src/pacman/pacman_ghost.tscn" id="1_rebkc"]
+[ext_resource type="Script" path="res://src/pacman/clyde.gd" id="2_lrv8e"]
+
+[node name="Clyde" instance=ExtResource("1_rebkc")]
+script = ExtResource("2_lrv8e")
+min_switch_time = 3.0
+max_switch_time = 8.0
+
+[node name="Sprite2D" parent="." index="2"]
+modulate = Color(1, 0.686275, 0.411765, 1)
