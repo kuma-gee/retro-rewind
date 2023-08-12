@@ -1,4 +1,7 @@
+class_name Pacman
 extends CharacterBody2D
+
+signal died()
 
 @export var tilemap: TileMap
 
@@ -23,3 +26,6 @@ func _physics_process(delta):
 func _on_area_2d_area_entered(area):
 	area.queue_free()
 	GameManager.add_pacman_score(1)
+
+func killed():
+	queue_free()

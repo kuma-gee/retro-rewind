@@ -1,4 +1,13 @@
+class_name PacmanMap
 extends TileMap
+
+func possible_dir(node: Node2D):
+	var result = []
+	var pos = local_to_map(node.position)
+	for dir in [Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT, Vector2i.DOWN]:
+		if not _is_wall(pos + dir):
+			result.append(dir)
+	return result
 
 func do_move(node: Node2D, motion: Vector2i, finish_fn: Callable, speed = 0.2):
 	var pos = local_to_map(node.position)

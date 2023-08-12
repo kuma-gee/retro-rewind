@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkoohkb4probt"]
+[gd_scene load_steps=8 format=3 uid="uid://bkoohkb4probt"]
 
 [ext_resource type="Script" path="res://src/pacman/pacman_ghost.gd" id="1_14ag2"]
 [ext_resource type="Texture2D" uid="uid://d0fw7geaonmms" path="res://assets/Ghost_Body.png" id="1_181rh"]
 [ext_resource type="Shader" path="res://src/circle.gdshader" id="3_gco6q"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ysh7"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_k44a0"]
+radius = 8.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4tgkf"]
 shader = ExtResource("3_gco6q")
@@ -16,9 +19,16 @@ shader_parameter/radius = 0.025
 
 [node name="PacmanGhost" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_14ag2")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_2ysh7")
+
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_k44a0")
@@ -86,3 +96,5 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

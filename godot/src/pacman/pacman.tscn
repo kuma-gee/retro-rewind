@@ -50,6 +50,7 @@ _data = {
 [node name="Pacman" type="CharacterBody2D" groups=["player"]]
 modulate = Color(1, 0.831373, 0.368627, 1)
 scale = Vector2(0.5, 0.5)
+collision_layer = 2
 script = ExtResource("1_pp57p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
