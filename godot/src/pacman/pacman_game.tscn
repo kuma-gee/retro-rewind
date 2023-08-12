@@ -548,11 +548,13 @@ modulate = Color(1, 0.180392, 0.180392, 1)
 z_index = 1
 position = Vector2(76.8333, 84.1667)
 tilemap = NodePath("..")
+look_ahead = 2
 
 [node name="Inky" parent="TileMap" node_paths=PackedStringArray("tilemap") instance=ExtResource("6_bjopi")]
 z_index = 1
 position = Vector2(67.6667, 84.1667)
 tilemap = NodePath("..")
+look_ahead = 10
 
 [node name="Sprite2D" parent="TileMap/Inky" index="2"]
 modulate = Color(0, 0.85098, 1, 1)

@@ -10,8 +10,9 @@ signal died()
 
 @onready var orig_modul = modulate
 
-var moving
-var tw
+var moving = null
+var tw: Tween
+var motion = Vector2.ZERO
 
 func _ready():
 	collision.disabled = true
@@ -31,7 +32,8 @@ func _physics_process(delta):
 	
 	var motion_x = ceil(input.get_action_strength("move_right")) - ceil(input.get_action_strength("move_left"))
 	var motion_y = ceil(input.get_action_strength("move_down")) - ceil(input.get_action_strength("move_up"))
-	moving = tilemap.do_move(self, Vector2i(motion_x, motion_y), func(): moving = null)
+	motion = Vector2i(motion_x, motion_y)
+	moving = tilemap.do_move(self, motion, func(): moving = null)
 
 
 func _on_area_2d_area_entered(area):

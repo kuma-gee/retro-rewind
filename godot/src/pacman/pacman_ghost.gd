@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var move = false : set = _set_move
 @export var tilemap: PacmanMap
 @export var fleeing = false
-@export var look_ahead = false
+@export var look_ahead = 0
 
 var moving
 var local_paths = []
@@ -24,10 +24,19 @@ func _process(delta):
 		return
 	
 	var player = get_tree().get_first_node_in_group("player")
-	if player:
+	if player and not player.collision.disabled:
 		var pac = player as Pacman
-		var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, global_position, pac.global_position, false)
+		var target = pac.global_position
 		
+		for d in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
+			print("%s = %s" % [d, tilemap.map_to_local(d)])
+		
+		if look_ahead > 0:
+			var ahead = _get_ahead_dir(pac.position, pac.motion)
+			if ahead:
+				target += tilemap.map_to_local(ahead)
+		
+		var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, global_position, target, false)
 		if path.size() > 1:
 			local_paths = []
 			for p in path:
@@ -60,6 +69,29 @@ func _process(delta):
 	else:
 		print("Could not find a direction to move")
 
+func _get_ahead_dir(node_pos: Vector2, motion: Vector2i):
+	var start = tilemap.local_to_map(node_pos)
+	var possible_moves = tilemap.possible_dir(node_pos)
+	var ahead_dir = Vector2i.ZERO
+	
+	for i in look_ahead:
+		if possible_moves.size() == 0:
+			break
+		
+		var largest_dot = 0
+		var largest = null
+		
+		for d in possible_moves:
+			var dot = Vector2(d).dot(motion)
+			if dot > largest_dot:
+				largest_dot = dot
+				largest = d
+		
+		ahead_dir += largest if largest != null else possible_moves.pick_random()
+		possible_moves = tilemap.possible_dir(start + ahead_dir, true)
+	
+	return ahead_dir
+
 func _get_fleeing_dir(pacman: Pacman):
 	var dirs = _possible_dirs()
 	var player_dir = position.direction_to(pacman.position)
@@ -75,7 +107,7 @@ func _get_fleeing_dir(pacman: Pacman):
 	return null
 
 func _possible_dirs():
-	return tilemap.possible_dir(self).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
+	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
 
 func _move(dir):
 	moving = tilemap.do_move(self, dir, func(): moving = null, speed)
