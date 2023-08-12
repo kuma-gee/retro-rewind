@@ -18,7 +18,7 @@ func _ready():
 		var s = sw_result.scores[i]
 		scores.append({"score": s.score, "player_name": s.player_name, "position": i + 1})
 	
-	ranking.show_scores(scores, 1)
+	ranking.show_scores(scores, -1)
 
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_accept"):

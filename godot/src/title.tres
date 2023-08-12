@@ -1,3 +1,4 @@
 [gd_resource type="LabelSettings" format=3 uid="uid://c584vf1vlxhtw"]
 
 [resource]
+outline_size = 1

@@ -1,0 +1,87 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkoohkb4probt"]
+
+[ext_resource type="Script" path="res://src/pacman/pacman_ghost.gd" id="1_14ag2"]
+[ext_resource type="Texture2D" uid="uid://d0fw7geaonmms" path="res://assets/Ghost_Body.png" id="1_181rh"]
+[ext_resource type="Shader" path="res://src/circle.gdshader" id="3_gco6q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k44a0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4tgkf"]
+shader = ExtResource("3_gco6q")
+shader_parameter/radius = 0.05
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dvtbf"]
+shader = ExtResource("3_gco6q")
+shader_parameter/radius = 0.02
+
+[node name="PacmanGhost" type="CharacterBody2D"]
+script = ExtResource("1_14ag2")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_k44a0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.929412, 0.541176, 1, 1)
+texture = ExtResource("1_181rh")
+
+[node name="EyeLeft" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4tgkf")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -23.0
+offset_top = -23.0
+offset_right = 17.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pupil" type="ColorRect" parent="EyeLeft"]
+material = SubResource("ShaderMaterial_dvtbf")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="EyeRight" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4tgkf")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -17.0
+offset_top = -23.0
+offset_right = 23.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pupil" type="ColorRect" parent="EyeRight"]
+material = SubResource("ShaderMaterial_dvtbf")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

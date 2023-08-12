@@ -24,7 +24,7 @@ func _physics_process(delta):
 		
 		motion = motion.bounce(n)
 		if abs(motion.dot(Vector2.UP)) < 0.07:
-			print("too narrow ", motion.normalized().dot(Vector2.LEFT))
+			#print("too narrow ", motion.normalized().dot(Vector2.LEFT))
 			var angle = motion.angle_to(Vector2.UP)
 			motion = motion.rotated(angle/2)
 		
