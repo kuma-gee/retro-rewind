@@ -28,4 +28,5 @@ func _on_area_2d_area_entered(area):
 	GameManager.add_pacman_score(1)
 
 func killed():
+	died.emit()
 	queue_free()

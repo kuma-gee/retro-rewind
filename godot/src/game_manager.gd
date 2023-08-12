@@ -18,7 +18,9 @@ enum Game {
 var breakout_score := 0
 var pacman_score := 0
 var current_game := Game.PACMAN
+
 var player_name := ""
+var player_position = -1
 
 var waiting_continue := false
 
@@ -86,6 +88,7 @@ func _on_keyboard_submitted(text):
 	scores.append({"score": total_score, "player_name": player_name, "position": scores_around.position})
 	scores.append_array(scores_around.scores_below)
 	
+	player_position = scores_around.position
 	ranking.show_scores(scores, scores_around.position)
 	waiting_continue = true
 	get_tree().create_timer(10.0).timeout.connect(_back_to_start)
