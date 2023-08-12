@@ -3,3 +3,4 @@ build/
 _sprites/
 .godot/
 node_modules
+.env

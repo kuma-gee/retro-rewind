@@ -1,26 +1,40 @@
-[gd_scene load_steps=5 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=4 format=3 uid="uid://di8g8e6s34cik"]
 
+[ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_7k3t4"]
 [ext_resource type="Script" path="res://src/game.gd" id="1_telmv"]
-[ext_resource type="PackedScene" uid="uid://cxxdr4wqyd5je" path="res://src/breakout/breakout_game.tscn" id="5_bhe1c"]
-[ext_resource type="Texture2D" uid="uid://d4lhik8ycdjpl" path="res://assets/Light.png" id="7_4l42h"]
-[ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="8_togkw"]
 
-[node name="Game" type="Node2D"]
+[sub_resource type="LabelSettings" id="LabelSettings_catnu"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7k3t4")
 script = ExtResource("1_telmv")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.0431373, 0.0431373, 0.0431373, 1)
-position = Vector2(159.5, 120.5)
-scale = Vector2(319, 239)
-texture = ExtResource("8_togkw")
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Breakout" parent="." instance=ExtResource("5_bhe1c")]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(160, 120)
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Breakout"
+label_settings = SubResource("LabelSettings_catnu")
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(333, 130)
-energy = 2.0
-shadow_enabled = true
-texture = ExtResource("7_4l42h")
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Rank"
