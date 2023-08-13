@@ -21,7 +21,7 @@ func restore():
 
 func collect():
 	collected.emit()
-	GameManager.add_pacman_score(1)
+	GameManager.add_pacman_score(5)
 	queue_free()
 
 func _process(delta):
