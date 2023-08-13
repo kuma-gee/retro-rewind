@@ -7,7 +7,6 @@ signal out_of_bound
 @export var speed := 300
 @export var spin_angle := PI/8
 
-@onready var timer := $OutOfBoundTimer
 @onready var current_speed = speed
 
 var motion := Vector2.ZERO
@@ -42,9 +41,5 @@ func _physics_process(delta):
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
-	timer.start()
-
-
-func _on_out_of_bound_timer_timeout():
 	out_of_bound.emit()
 	queue_free()

@@ -23,6 +23,7 @@ SceneManager="*res://addons/scene-manager/SceneManager.tscn"
 Debug="*res://addons/debug/Debug.tscn"
 GameManager="*res://src/game_manager.tscn"
 SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
+CacheManager="*res://addons/save-system/CacheManager.gd"
 
 [debug]
 

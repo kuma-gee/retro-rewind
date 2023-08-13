@@ -1,4 +1,3 @@
-class_name CacheManager
 extends Node
 
 const PERSIST_GROUP = "Persist"
@@ -10,7 +9,8 @@ var scene_data = {}
 func save_scene():
 	var scene = get_tree().current_scene
 	var data = _get_persist_group_data()
-	if not data.empty():
+	
+	if not data.is_empty():
 		scene_data[scene.name] = data
 		logger.debug("Save scene data: %s" % scene_data)
 
@@ -42,3 +42,12 @@ func _load_perist_group_data(node_data: Dictionary):
 			if node_data.has(path) and node.has_method("load_data"):
 				var data = node_data[path]
 				node.load_data(data)
+
+func get_data_for(node):
+	var scene = get_tree().current_scene
+	if scene_data.has(scene.name):
+		var node_data = scene_data[scene.name]
+		var path = scene.get_path_to(node)
+		if node_data.has(path):
+			return node_data[path]
+	return null

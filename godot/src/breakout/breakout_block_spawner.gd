@@ -19,14 +19,20 @@ var positions = {}
 func _ready():
 	for y in rows:
 		for x in column:
-			_create_block.call_deferred(x, y)
+			if positions.is_empty() or positions.has(Vector2(x, y)):
+				_create_block.call_deferred(x, y)
 
 func _create_block(x: int, y: int):
 	var block = block_scene.instantiate()
 	block.value = _get_block_value(y)
 	add_child(block)
-	block.global_position = global_position + Vector2(x * block_width, y * block_height) + Vector2(x * gap, y * gap)
-	positions[block] = block.global_position
+	var pos = Vector2(x, y)
+	block.removed.connect(func(): positions.erase(pos))
+	if positions.has(pos):
+		block.global_position = positions[pos]
+	else:
+		block.global_position = global_position + Vector2(x * block_width, y * block_height) + Vector2(x * gap, y * gap)
+		positions[pos] = block.global_position
 
 func _get_block_value(row: int):
 	if row <= 1:
@@ -46,5 +52,11 @@ func glitch_blocks():
 		)
 
 func reset_blocks():
-	for child in get_children():
-		child.global_position = positions[child]
+	for i in get_child_count():
+		var child = get_child(i)
+		child.global_position = positions[_idx_to_coord(i)]
+
+func _idx_to_coord(i: int):
+	var y = floor(i / column)
+	var x = i - (y * column) - 1
+	return Vector2(x, y)

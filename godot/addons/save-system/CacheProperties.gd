@@ -3,9 +3,8 @@ extends Node
 
 @export var properties: Array[String]
 @export var node_path: NodePath
-@onready var node := get_node(node_path) if node_path else get_parent()
 
-var logger = Logger.new("SaveProperties")
+var logger = Logger.new("CacheProperties")
 
 
 func _ready():
@@ -15,13 +14,17 @@ func _ready():
 func save_data():
 	var data = {}
 	for prop in properties:
-		data[prop] = node.get(prop)
+		data[prop] = get_parent().get(prop)
 
-	logger.debug("Save for %s: %s" % [get_tree().current_scene.get_path_to(node), str(data)])
+	logger.debug("Save for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
 	return data
 
+func _enter_tree():
+	var data = CacheManager.get_data_for(self)
+	if data:
+		load_data(data)
 
 func load_data(data: Dictionary):
-	logger.debug("Load for %s: %s" % [get_tree().current_scene.get_path_to(node), str(data)])
+	logger.debug("Load for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
 	for prop in data:
-		node.set(prop, data[prop])
+		get_parent().set(prop, data[prop])

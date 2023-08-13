@@ -30,4 +30,4 @@ func _camera_rotation_glitch():
 func _restore_rotation():
 	camera.rotation_degrees = 0
 	player.flip_input = false
-	
+

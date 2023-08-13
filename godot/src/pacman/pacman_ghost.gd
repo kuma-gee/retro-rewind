@@ -28,9 +28,6 @@ func _process(delta):
 		var pac = player as Pacman
 		var target = pac.global_position
 		
-		for d in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
-			print("%s = %s" % [d, tilemap.map_to_local(d)])
-		
 		if look_ahead > 0:
 			var ahead = _get_ahead_dir(pac.position, pac.motion)
 			if ahead:
@@ -63,11 +60,11 @@ func _process(delta):
 	
 	# Default roaming
 	var dirs = _possible_dirs()
-	var random_dir = dirs.pick_random()
-	if random_dir:
+	if not dirs.is_empty():
+		var random_dir = dirs.pick_random()
 		_move(random_dir)
-	else:
-		print("Could not find a direction to move")
+	else: # reached a deadend
+		_move(return_dir)
 
 func _get_ahead_dir(node_pos: Vector2, motion: Vector2i):
 	var start = tilemap.local_to_map(node_pos)

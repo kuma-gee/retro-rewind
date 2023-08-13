@@ -1,6 +1,8 @@
 class_name BreakoutBlock
 extends StaticBody2D
 
+signal removed()
+
 enum Value {
 	RED = 7,
 	ORANGE = 5,
@@ -26,4 +28,5 @@ func _get_value_color():
 	return Color.WHITE
 
 func remove_block():
+	removed.emit()
 	queue_free()

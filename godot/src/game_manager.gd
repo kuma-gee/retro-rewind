@@ -5,6 +5,8 @@ enum Game {
 	PACMAN,
 }
 
+@export var game_switch_chance := 0.3
+
 @export var score_label: Label
 @export var screen: Control
 @export var hp_container: Control
@@ -59,7 +61,13 @@ func start_game(game = current_game):
 	breakout_score = 0
 	pacman_score = 0
 	_update_score()
+	_change_game(game, false)
 	
+
+func _change_game(game, save = true):
+	if save:
+		CacheManager.save_scene()
+		
 	var scene = _game_path(game)
 	get_tree().change_scene_to_file(scene)
 	current_game = game
@@ -130,6 +138,9 @@ func glitch(callback: Callable, start_timer = false):
 		var mat = screen.material as ShaderMaterial
 		mat.set_shader_parameter("enable_glitch", false)
 		mat.set_shader_parameter("glitch_time", 0.5)
+		get_tree().paused = true
+		await get_tree().create_timer(0.5).timeout
+		get_tree().paused = false
 		if start_timer:
 			glitch_timer.start()
 	)
@@ -141,4 +152,13 @@ func _set_glitch_time(time):
 	
 
 func _on_glitch_timer_timeout():
-	glitch(func(): get_tree().current_scene.random_glitch())
+	glitch(func():
+		if randf() <= game_switch_chance:
+			var games = []
+			for g in Game.values():
+				if g != current_game:
+					games.append(g)
+			_change_game(games.pick_random())
+		else:
+			get_tree().current_scene.random_glitch()
+	)

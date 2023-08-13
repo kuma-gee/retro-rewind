@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2eg4xfv7ro3l"]
+[gd_scene load_steps=6 format=3 uid="uid://c2eg4xfv7ro3l"]
 
 [ext_resource type="Script" path="res://src/breakout/breakout_player.gd" id="1_hyx73"]
 [ext_resource type="PackedScene" uid="uid://cxqsgshr7uohb" path="res://src/breakout/breakout_ball.tscn" id="2_e4s4j"]
 [ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="3_8m4tx"]
+[ext_resource type="Script" path="res://addons/save-system/CacheProperties.gd" id="4_1c1c2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q7cjd"]
 size = Vector2(20, 4)
@@ -13,6 +14,8 @@ collision_mask = 3
 script = ExtResource("1_hyx73")
 ball_scene = ExtResource("2_e4s4j")
 ball_remote = NodePath("Marker2D/RemoteTransform2D")
+max_x = 600
+min_x = 40
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -10.0
@@ -34,4 +37,12 @@ position = Vector2(0, -6)
 update_rotation = false
 update_scale = false
 
+[node name="Cache" type="Node" parent="."]
+script = ExtResource("4_1c1c2")
+properties = Array[String](["global_position", "ball_position", "ball_motion"])
+
+[node name="BallSpawnTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="just_pressed" from="Input" to="." method="_on_input_just_pressed"]
+[connection signal="timeout" from="BallSpawnTimer" to="." method="_on_ball_spawn_timer_timeout"]
