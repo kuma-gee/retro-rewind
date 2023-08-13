@@ -3,6 +3,7 @@ extends GridContainer
 signal submitted(text)
 
 @export var label: Label
+@export var submit_btn: Button
 
 const a = 97
 const z = 122
@@ -10,6 +11,12 @@ const z = 122
 var typed = ""
 
 func _ready():
+	submit_btn.pressed.connect(func():
+		if typed != "":
+			submitted.emit(typed)
+			typed = ""
+	)
+	
 	for c in range(a, z + 1):
 		var btn = Button.new()
 		add_child(btn)
@@ -26,12 +33,6 @@ func _ready():
 func _type_char(char):
 	if char == null:
 		typed = typed.substr(0, typed.length() - 1)
-	else:
+	elif typed.length() < 15:
 		typed += char
 	label.text = typed
-
-func _unhandled_input(event):
-	if event.is_action_pressed("submit") and typed != "":
-		submitted.emit(typed)
-		typed = ""
-		label.text = "ENTER to submit"

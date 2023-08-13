@@ -88,6 +88,7 @@ func lose_health():
 		gameover = true
 		end_score.text = "Score: " + str(_get_total_score())
 		gameover_container.show()
+		_reset_glitch()
 		if glitch_tween:
 			glitch_tween.kill()
 
@@ -143,15 +144,18 @@ func glitch(callback: Callable, start_timer = false):
 		if gameover: return
 		
 		var wait_time = callback.call()
-		var mat = screen.material as ShaderMaterial
-		mat.set_shader_parameter("enable_glitch", false)
-		mat.set_shader_parameter("glitch_time", 0.5)
+		_reset_glitch()
 		get_tree().paused = true
 		await get_tree().create_timer(wait_time if wait_time else 0.5).timeout
 		get_tree().paused = false
 		if start_timer:
 			glitch_timer.start()
 	)
+
+func _reset_glitch():
+	var mat = screen.material as ShaderMaterial
+	mat.set_shader_parameter("enable_glitch", false)
+	mat.set_shader_parameter("glitch_time", 0.5)
 
 func _set_glitch_time(time):
 	var mat = screen.material as ShaderMaterial

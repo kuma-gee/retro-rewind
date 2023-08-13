@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://crny5uvk3tm4h"]
+[gd_scene load_steps=10 format=3 uid="uid://crny5uvk3tm4h"]
 
 [ext_resource type="Script" path="res://src/game_manager.gd" id="1_c0r20"]
 [ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_mhbye"]
 [ext_resource type="Shader" path="res://src/monitor.gdshader" id="2_defhv"]
 [ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="3_dwsqs"]
 [ext_resource type="Material" uid="uid://dws48v6xay15r" path="res://src/breakout/health.tres" id="3_se5hi"]
-[ext_resource type="Texture2D" uid="uid://bnanaajsbjbi0" path="res://assets/Enter.png" id="5_ec8gh"]
 [ext_resource type="LabelSettings" uid="uid://c584vf1vlxhtw" path="res://src/title.tres" id="5_oa80m"]
 [ext_resource type="Script" path="res://src/Keyboard.gd" id="6_xvtbm"]
 [ext_resource type="PackedScene" uid="uid://cyl56bx4nrgug" path="res://src/ranking.tscn" id="7_ibfye"]
@@ -160,24 +159,20 @@ layout_mode = 2
 text = "Score"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
 layout_mode = 2
-alignment = 1
+horizontal_alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "ENTER to submit"
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("5_ec8gh")
-stretch_mode = 2
-
-[node name="Keyboard" type="GridContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer" node_paths=PackedStringArray("label")]
+[node name="Keyboard" type="GridContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer" node_paths=PackedStringArray("label", "submit_btn")]
 layout_mode = 2
 columns = 10
 script = ExtResource("6_xvtbm")
-label = NodePath("../HBoxContainer/Label")
+label = NodePath("../Label2")
+submit_btn = NodePath("../Button")
+
+[node name="Button" type="Button" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Submit"
 
 [node name="Ranking" type="Control" parent="CanvasLayer"]
 layout_mode = 3
