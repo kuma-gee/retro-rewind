@@ -22,6 +22,7 @@ var return_dir = Vector2i.ZERO
 
 var flee_threshold = 0.01
 var speed = 0.25
+var catchable = true
 
 var return_spawn = false
 
@@ -32,13 +33,13 @@ func _set_move(m):
 	move = m
 
 func change_running():
-	collision.set_deferred("disabled", false)
+	catchable = true
 	fleeing = true
 	current_modulate = Color.from_string("1b39bf", Color.BLUE)
 	
 func change_normal():
-	if not collision.disabled:
-		collision.set_deferred("disabled", true)
+	if catchable and not return_spawn:
+		catchable = false
 		fleeing = false
 		current_modulate = orig_modulate
 
@@ -65,6 +66,7 @@ func _get_target():
 	
 func _process(_delta):
 	sprite.modulate = current_modulate
+	collision.disabled = not catchable
 	
 	if not move:
 		return
@@ -173,7 +175,7 @@ func _draw():
 
 
 func _on_area_2d_body_entered(body):
-	if body is Pacman and collision.disabled:
+	if body is Pacman and not catchable:
 		body.killed()
 
 
