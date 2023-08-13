@@ -21,7 +21,7 @@ enum Game {
 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.BREAKOUT
+var current_game := Game.PACMAN
 
 var player_name := ""
 var player_position = -1

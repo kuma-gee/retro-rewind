@@ -17,16 +17,16 @@ var motion = Vector2.ZERO
 
 var start_invincible = true
 
-func _ready():
-	if start_invincible:
-		collision.disabled = true
-		tw = create_tween()
-		tw.set_loops()
-		tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
-		tw.tween_property(self, "modulate", orig_modul, 0.5)
-		invincible_timer.start()
-	else:
-		collision.disabled = false
+#func _ready():
+#	if start_invincible:
+#		collision.disabled = true
+#		tw = create_tween()
+#		tw.set_loops()
+#		tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
+#		tw.tween_property(self, "modulate", orig_modul, 0.5)
+#		invincible_timer.start()
+#	else:
+#		collision.disabled = false
 
 func _physics_process(delta):
 	if moving != null:

@@ -17,18 +17,30 @@ extends Marker2D
 var positions = {}
 
 func _ready():
+	_create_blocks()
+
+func _create_blocks():
 	for y in rows:
 		for x in column:
 			if positions.is_empty() or positions.has(Vector2(x, y)):
 				_create_block.call_deferred(x, y)
 
+
 func _create_block(x: int, y: int):
 	var block = block_scene.instantiate()
 	block.value = _get_block_value(y)
 	add_child(block)
+	
 	var pos = Vector2(x, y)
 	block.pos = pos
-	block.removed.connect(func(): positions.erase(pos))
+	block.removed.connect(func():
+		positions.erase(pos)
+		if positions.is_empty():
+			get_tree().paused = true
+			await get_tree().create_timer(1.0).timeout
+			_create_blocks()
+			get_tree().paused = false
+	)
 	if positions.has(pos):
 		block.global_position = positions[pos]
 	else:
