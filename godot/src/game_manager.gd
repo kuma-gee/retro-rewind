@@ -28,6 +28,7 @@ var player_position = -1
 
 var waiting_continue := false
 var gameover := false
+var glitch_tween
 
 func _ready():
 	game_ui.hide()
@@ -84,6 +85,8 @@ func lose_health():
 		gameover = true
 		end_score.text = "Score: " + str(_get_total_score())
 		gameover_container.show()
+		if glitch_tween:
+			glitch_tween.kill()
 
 func _on_keyboard_submitted(text):
 	gameover_container.hide()
@@ -131,9 +134,11 @@ func add_pacman_score(v: int):
 func glitch(callback: Callable, start_timer = false):
 	if gameover: return
 	
-	var tw = create_tween()
-	tw.tween_method(_set_glitch_time, 0.5, 5.0, 3.0)
-	tw.finished.connect(func():
+	glitch_tween = create_tween()
+	glitch_tween.tween_method(_set_glitch_time, 0.5, 5.0, 3.0)
+	glitch_tween.finished.connect(func():
+		if gameover: return
+		
 		callback.call()
 		var mat = screen.material as ShaderMaterial
 		mat.set_shader_parameter("enable_glitch", false)

@@ -16,7 +16,7 @@ var speed = 0.25
 func _set_move(m):
 	move = m
 
-func _process(delta):
+func _process(_delta):
 	if not move:
 		return
 	

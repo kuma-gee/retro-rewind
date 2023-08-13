@@ -5,11 +5,12 @@ extends PacmanGhost
 
 func _set_move(m):
 	super._set_move(m)
-	if m:
-		_start_switch_timer()
+#	if m:
+#		_start_switch_timer()
 
 func _start_switch_timer():
-	get_tree().create_timer(randf_range(min_switch_time, max_switch_time)).timeout.connect(func():
-		fleeing = not fleeing
-		_start_switch_timer()
-	)
+	$Timer.start(randf_range(min_switch_time, max_switch_time))
+
+func _on_timer_timeout():
+	fleeing = not fleeing
+	_start_switch_timer()

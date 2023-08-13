@@ -57,6 +57,6 @@ func reset_blocks():
 		child.global_position = positions[_idx_to_coord(i)]
 
 func _idx_to_coord(i: int):
-	var y = floor(i / column)
+	var y = floor(i / float(column))
 	var x = i - (y * column) - 1
 	return Vector2(x, y)

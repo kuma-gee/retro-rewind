@@ -89,6 +89,20 @@ layout_mode = 2
 texture = ExtResource("3_dwsqs")
 stretch_mode = 5
 
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HpContainer"]
+material = ExtResource("3_se5hi")
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+texture = ExtResource("3_dwsqs")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer/HBoxContainer/HpContainer"]
+material = ExtResource("3_se5hi")
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+texture = ExtResource("3_dwsqs")
+stretch_mode = 5
+
 [node name="Gameover" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15

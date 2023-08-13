@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkoohkb4probt"]
+[gd_scene load_steps=9 format=3 uid="uid://bkoohkb4probt"]
 
 [ext_resource type="Script" path="res://src/pacman/pacman_ghost.gd" id="1_14ag2"]
 [ext_resource type="Texture2D" uid="uid://d0fw7geaonmms" path="res://assets/Ghost_Body.png" id="1_181rh"]
 [ext_resource type="Shader" path="res://src/circle.gdshader" id="3_gco6q"]
+[ext_resource type="Script" path="res://addons/save-system/CacheProperties.gd" id="4_8xpeq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2ysh7"]
 
@@ -96,5 +97,9 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="Cache" type="Node" parent="."]
+script = ExtResource("4_8xpeq")
+properties = Array[String](["move", "position", "freeing", "return_dir"])
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

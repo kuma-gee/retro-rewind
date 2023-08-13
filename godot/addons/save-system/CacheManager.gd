@@ -12,7 +12,7 @@ func save_scene():
 	
 	if not data.is_empty():
 		scene_data[scene.name] = data
-		logger.debug("Save scene data: %s" % scene_data)
+		#logger.debug("Save scene data: %s" % scene_data)
 
 
 func load_scene():
@@ -20,7 +20,7 @@ func load_scene():
 	if scene_data.has(scene.name):
 		var data = scene_data[scene.name]
 		_load_perist_group_data(data)
-		logger.debug("Load scene data: %s" % data)
+		#logger.debug("Load scene data: %s" % data)
 
 
 func _get_persist_group_data(global: bool = false):

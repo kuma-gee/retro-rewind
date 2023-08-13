@@ -15,7 +15,7 @@ func start_move():
 	var angle = randf_range(-PI/4, PI/4)
 	motion = Vector2.UP.rotated(angle)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = motion * current_speed
 	if move_and_slide():
 		var collision = get_last_slide_collision()

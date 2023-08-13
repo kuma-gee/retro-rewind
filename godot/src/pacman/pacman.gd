@@ -7,6 +7,7 @@ signal died()
 
 @onready var input: PlayerInput = $Input
 @onready var collision := $CollisionShape2D
+@onready var invincible_timer := $InvincibilityTimer
 
 @onready var orig_modul = modulate
 
@@ -14,12 +15,18 @@ var moving = null
 var tw: Tween
 var motion = Vector2.ZERO
 
+var start_invincible = true
+
 func _ready():
-	collision.disabled = true
-	tw = create_tween()
-	tw.set_loops()
-	tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
-	tw.tween_property(self, "modulate", orig_modul, 0.5)
+	if start_invincible:
+		collision.disabled = true
+		tw = create_tween()
+		tw.set_loops()
+		tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
+		tw.tween_property(self, "modulate", orig_modul, 0.5)
+		invincible_timer.start()
+	else:
+		collision.disabled = false
 
 func _physics_process(delta):
 	if moving != null:
@@ -36,16 +43,13 @@ func _physics_process(delta):
 	moving = tilemap.do_move(self, motion, func(): moving = null)
 
 
-func _on_area_2d_area_entered(area):
-	area.queue_free()
-	GameManager.add_pacman_score(1)
-
 func killed():
 	died.emit()
 	queue_free()
 
 func _on_invincibility_timer_timeout():
-	tw.kill()
+	if tw:
+		tw.kill()
 	modulate = orig_modul
 	collision.disabled = false
 	
