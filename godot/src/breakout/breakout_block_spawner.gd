@@ -9,6 +9,13 @@ extends Marker2D
 
 @export var block_scene: PackedScene
 
+@export var min_glitch_offset_x := -5
+@export var min_glitch_offset_y := -5
+@export var max_glitch_offset_x := 5
+@export var max_glitch_offset_y := 5
+
+var positions = {}
+
 func _ready():
 	for y in rows:
 		for x in column:
@@ -19,6 +26,7 @@ func _create_block(x: int, y: int):
 	block.value = _get_block_value(y)
 	add_child(block)
 	block.global_position = global_position + Vector2(x * block_width, y * block_height) + Vector2(x * gap, y * gap)
+	positions[block] = block.global_position
 
 func _get_block_value(row: int):
 	if row <= 1:
@@ -29,3 +37,14 @@ func _get_block_value(row: int):
 		return BreakoutBlock.Value.GREEN
 
 	return BreakoutBlock.Value.YELLOW
+
+func glitch_blocks():
+	for child in get_children():
+		child.global_position += Vector2(
+			randf_range(min_glitch_offset_x, max_glitch_offset_x),
+			randf_range(min_glitch_offset_y, max_glitch_offset_y)
+		)
+
+func reset_blocks():
+	for child in get_children():
+		child.global_position = positions[child]

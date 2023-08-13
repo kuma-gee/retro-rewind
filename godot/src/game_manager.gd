@@ -14,15 +14,18 @@ enum Game {
 @export var ranking: Ranking
 @export var end_score: Label
 
+@onready var glitch_timer := $GlitchTimer
 @onready var health := hp_container.get_child_count() 
+
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.PACMAN
+var current_game := Game.BREAKOUT
 
 var player_name := ""
 var player_position = -1
 
 var waiting_continue := false
+var gameover := false
 
 func _ready():
 	game_ui.hide()
@@ -43,6 +46,7 @@ func _unhandled_input(event):
 func _back_to_start():
 	if not waiting_continue: return
 	
+	gameover = false
 	game_ui.hide()
 	gameover_container.hide()
 	ranking_container.hide()
@@ -59,6 +63,7 @@ func start_game(game = current_game):
 	var scene = _game_path(game)
 	get_tree().change_scene_to_file(scene)
 	current_game = game
+	glitch_timer.start()
 
 func lose_health():
 	health -= 1
@@ -68,6 +73,7 @@ func lose_health():
 	
 	if health < 0:
 		get_tree().paused = true
+		gameover = true
 		end_score.text = "Score: " + str(_get_total_score())
 		gameover_container.show()
 
@@ -114,9 +120,25 @@ func add_pacman_score(v: int):
 	pacman_score += v
 	_update_score()
 
-func _glitch():
+func glitch(callback: Callable, start_timer = false):
+	if gameover: return
+	
+	var tw = create_tween()
+	tw.tween_method(_set_glitch_time, 0.5, 5.0, 3.0)
+	tw.finished.connect(func():
+		callback.call()
+		var mat = screen.material as ShaderMaterial
+		mat.set_shader_parameter("enable_glitch", false)
+		mat.set_shader_parameter("glitch_time", 0.5)
+		if start_timer:
+			glitch_timer.start()
+	)
+
+func _set_glitch_time(time):
 	var mat = screen.material as ShaderMaterial
 	mat.set_shader_parameter("enable_glitch", true)
+	mat.set_shader_parameter("glitch_time", time)
+	
 
 func _on_glitch_timer_timeout():
-	_glitch()
+	glitch(func(): get_tree().current_scene.random_glitch())

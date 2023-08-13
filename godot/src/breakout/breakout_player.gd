@@ -7,7 +7,7 @@ extends StaticBody2D
 @export var max_x := 605
 @export var min_x := 35
 
-@export var disable_input = false
+@export var flip_input := false
 
 @onready var input := $Input
 
@@ -17,8 +17,6 @@ var motion = 0
 
 func _ready():
 	_spawn_ball.call_deferred()
-	if disable_input:
-		input.disable()
 
 func _spawn_ball():
 	active_ball = ball_scene.instantiate() as BreakoutBall
@@ -31,6 +29,9 @@ func _spawn_ball():
 
 func _physics_process(delta):
 	motion = input.get_action_strength("move_right") - input.get_action_strength("move_left")
+	if flip_input:
+		motion *= -1
+	
 	move_local_x(motion * speed * delta)
 	global_position.x = clamp(global_position.x, min_x, max_x)
 
