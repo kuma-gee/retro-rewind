@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://blv8x3mavhdlp"]
+
+[ext_resource type="Shader" path="res://src/circle.gdshader" id="1_8pyex"]
+[ext_resource type="Script" path="res://src/pacman/pacman_power_up.gd" id="1_26pe1"]
+[ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="1_l0bot"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nqdyt"]
+radius = 2.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rm37r"]
+shader = ExtResource("1_8pyex")
+shader_parameter/radius = 0.5
+
+[node name="PacmanPowerUp" type="Area2D"]
+collision_layer = 32
+collision_mask = 32
+script = ExtResource("1_26pe1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nqdyt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_rm37r")
+scale = Vector2(5, 5)
+texture = ExtResource("1_l0bot")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

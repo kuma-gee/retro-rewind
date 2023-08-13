@@ -1,14 +1,17 @@
 extends Node2D
 
+@export var powerup_scene: PackedScene
 @export var point_scene: PackedScene
 @export var pacman_scene: PackedScene
 @export var pacman_spawn: Node2D
 
+@export var blinky: PacmanGhost
 @export var pinky: PacmanGhost
 @export var inky: PacmanGhost
 @export var clyde: PacmanGhost
 
 @onready var tilemap: TileMap = $TileMap
+@onready var powerup_timer: Timer = $PowerupTimer
 
 var pacman
 var pacman_pos
@@ -33,9 +36,23 @@ var exclude_pos = [
 	Vector2i(9, 9),
 ]
 
+var powerup_pos = [
+	Vector2i(1, 3),
+	Vector2i(17, 3),
+	Vector2i(1, 16),
+	Vector2i(17, 16),
+]
+
 func _ready():
 	_spawn_points()
 	_spawn_pacman.call_deferred()
+
+func _activate_powerup():
+	blinky.change_running()
+	pinky.change_running()
+	inky.change_running()
+	clyde.change_running()
+	powerup_timer.start()
 
 func _spawn_points():
 	var rect = tilemap.get_used_rect()
@@ -48,10 +65,13 @@ func _spawn_points():
 			
 			var cell = tilemap.get_cell_source_id(0, v)
 			if cell == -1 and (new or points.has(v)):
-				var point = point_scene.instantiate()
+				var scene = powerup_scene if v in powerup_pos else point_scene
+				var point = scene.instantiate()
 				point.position = tilemap.map_to_local(v)
 				point.collected.connect(func():
 					points.erase(v)
+					if v in powerup_pos:
+						_activate_powerup()
 					if points.is_empty():
 						get_tree().paused = true
 						await get_tree().create_timer(1.0).timeout
@@ -90,3 +110,10 @@ func _on_release_ghost_timer_timeout():
 
 func random_glitch():
 	pass
+
+
+func _on_powerup_timer_timeout():
+	blinky.change_normal()
+	pinky.change_normal()
+	inky.change_normal()
+	clyde.change_normal()

@@ -1,10 +1,17 @@
 class_name PacmanGhost
 extends CharacterBody2D
 
+@export var spawn_pos: Node2D
 @export var move = false : set = _set_move
 @export var tilemap: PacmanMap
 @export var fleeing = false
 @export var look_ahead = 0
+
+@onready var respawn_timer := $RespawnTimer
+@onready var collision := $CollisionShape2D
+@onready var sprite := $Sprite2D
+@onready var orig_modulate = sprite.modulate
+@onready var current_modulate = orig_modulate
 
 var moving
 var local_paths = []
@@ -13,25 +20,63 @@ var return_dir = Vector2i.ZERO
 var flee_threshold = 0.01
 var speed = 0.25
 
+var return_spawn = false
+
+func _ready():
+	collision.disabled = true
+
 func _set_move(m):
 	move = m
 
+func change_running():
+	collision.set_deferred("disabled", false)
+	fleeing = true
+	current_modulate = Color.from_string("1b39bf", Color.BLUE)
+	
+func change_normal():
+	if not collision.disabled:
+		collision.set_deferred("disabled", true)
+		fleeing = false
+		current_modulate = orig_modulate
+
+func caught():
+	return_spawn = true
+	current_modulate = Color.TRANSPARENT
+
+func _get_target():
+	if return_spawn:
+		return [spawn_pos.global_position, null]
+	
+	var player = get_tree().get_first_node_in_group("player")
+	if player == null or player.collision.disabled:
+		return [null, null]
+	
+	var pac = player as Pacman
+	var target = pac.global_position
+	
+	if look_ahead > 0:
+		var ahead = _get_ahead_dir(pac.position, pac.motion)
+		if ahead:
+			target += tilemap.map_to_local(ahead)
+	return [target, pac]
+	
 func _process(_delta):
+	sprite.modulate = current_modulate
+	
 	if not move:
 		return
 	
 	if moving != null:
 		return
 	
-	var player = get_tree().get_first_node_in_group("player")
-	if player and not player.collision.disabled:
-		var pac = player as Pacman
-		var target = pac.global_position
+	var result = _get_target()
+	if result[0]:
+		var target = result[0]
+		var pac = result[1]
 		
-		if look_ahead > 0:
-			var ahead = _get_ahead_dir(pac.position, pac.motion)
-			if ahead:
-				target += tilemap.map_to_local(ahead)
+		var dist = global_position.distance_to(target)
+		if dist < 2 and return_spawn and respawn_timer.is_stopped():
+			respawn_timer.start()
 		
 		var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, global_position, target, false)
 		if path.size() > 1:
@@ -45,7 +90,7 @@ func _process(_delta):
 				var dir = p.normalized()
 				rounded = Vector2i(round(dir.x), round(dir.y))
 				
-				if fleeing:
+				if fleeing and pac:
 					var flee_dir = _get_fleeing_dir(pac)
 					if flee_dir:
 						rounded = flee_dir
@@ -57,6 +102,8 @@ func _process(_delta):
 				_move(rounded)
 				queue_redraw()
 				return
+			
+			
 	
 	# Default roaming
 	var dirs = _possible_dirs()
@@ -120,5 +167,10 @@ func _draw():
 
 
 func _on_area_2d_body_entered(body):
-	if body is Pacman:
+	if body is Pacman and collision.disabled:
 		body.killed()
+
+
+func _on_respawn_timer_timeout():
+	return_spawn = false
+	change_normal()

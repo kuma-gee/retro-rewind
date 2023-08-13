@@ -7,7 +7,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_1r3rd"]
 radius = 8.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_jcbnb"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_yf27s"]
 
 [sub_resource type="Animation" id="Animation_pin4f"]
 length = 0.001
@@ -55,17 +55,16 @@ script = ExtResource("1_pp57p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_1r3rd")
-disabled = true
 
 [node name="Input" type="Node" parent="."]
 script = ExtResource("3_kya4o")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 32
-collision_mask = 32
+collision_mask = 36
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_jcbnb")
+shape = SubResource("CircleShape2D_yf27s")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_on5ru")
@@ -81,4 +80,5 @@ libraries = {
 wait_time = 3.0
 one_shot = true
 
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
