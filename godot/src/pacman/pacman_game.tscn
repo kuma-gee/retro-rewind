@@ -586,7 +586,7 @@ script = ExtResource("8_4gmrs")
 properties = Array[String](["pacman_pos", "points", "powerup_timeleft"])
 
 [node name="PowerupTimer" type="Timer" parent="."]
-wait_time = 8.0
+wait_time = 10.0
 one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]

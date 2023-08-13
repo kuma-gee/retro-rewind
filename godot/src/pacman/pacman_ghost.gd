@@ -27,6 +27,8 @@ var catchable = true : set = _set_catchable
 var return_spawn = false
 var respawn_time_left := 0.0
 
+var blink_tw: Tween
+
 func _ready():
 	collision.disabled = true
 	if current_modulate == null:
@@ -39,6 +41,10 @@ func _ready():
 
 func _set_catchable(c):
 	catchable = c
+	if blink_tw:
+		blink_tw.kill()
+		modulate = Color.WHITE
+	
 	if catchable:
 		fleeing = true
 		current_modulate = Color.from_string("1b39bf", Color.BLUE)
@@ -49,6 +55,18 @@ func _set_catchable(c):
 		fleeing = false
 		current_modulate = orig_modulate
 
+func blink():
+	if catchable and not return_spawn:
+		_do_blink()
+
+func _do_blink():
+	if blink_tw:
+		blink_tw.kill()
+	blink_tw = create_tween()
+	blink_tw.set_loops()
+	blink_tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
+	blink_tw.tween_property(self, "modulate", Color.WHITE, 0.5)
+	
 func _set_move(m):
 	move = m
 
@@ -84,6 +102,11 @@ func _process(_delta):
 	sprite.modulate = current_modulate
 	collision.disabled = not catchable
 	respawn_time_left = respawn_timer.time_left
+	if not catchable:
+		modulate = Color.WHITE
+		
+	if respawn_time_left > 0 and respawn_time_left < 2.0 and (blink_tw == null or not blink_tw.is_running()):
+		_do_blink()
 	
 	if not move:
 		return
@@ -182,13 +205,13 @@ func _move(dir):
 	moving = tilemap.do_move(self, dir, func(): moving = null, speed)
 	return_dir = -dir
 
-func _draw():
-	if local_paths.size() > 0:
-		var start = local_paths[0]
-		for i in range(1, local_paths.size()):
-			var end = local_paths[i]
-			draw_line(start, end, Color.RED, 2)
-			start = end
+#func _draw():
+#	if local_paths.size() > 0:
+#		var start = local_paths[0]
+#		for i in range(1, local_paths.size()):
+#			var end = local_paths[i]
+#			draw_line(start, end, Color.RED, 2)
+#			start = end
 
 
 func _on_area_2d_body_entered(body):

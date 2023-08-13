@@ -17,6 +17,8 @@ extends Node2D
 var pacman
 var pacman_pos
 var powerup_timeleft := 0.0
+var blink_called = true
+var flipped = false
 
 var points = {}
 
@@ -50,12 +52,14 @@ func random_glitch():
 	last_glitch = glitch
 
 func _rotate_camera():
+	flipped = true
 	camera.rotation_degrees = 180
-	pacman.flip_input = true
+	pacman.flip_input = flipped
 	get_tree().create_timer(8.0).timeout.connect(func(): 
 		GameManager.glitch(func():
 			camera.rotation_degrees = 0
-			pacman.flip_input = false
+			flipped = false
+			pacman.flip_input = flipped
 		, true)
 	)
 
@@ -91,6 +95,14 @@ func _restore_points():
 func _process(_delta):
 	powerup_timeleft = powerup_timer.time_left
 	pacman_pos = pacman.position if pacman else null
+	
+	if powerup_timeleft > 0 and powerup_timeleft < 2.0 and not blink_called:
+		blinky.blink()
+		pinky.blink()
+		inky.blink()
+		clyde.blink()
+		blink_called = true
+		
 
 func _activate_powerup():
 	blinky.change_running()
@@ -98,6 +110,7 @@ func _activate_powerup():
 	inky.change_running()
 	clyde.change_running()
 	powerup_timer.start()
+	blink_called = false
 
 func _on_powerup_timer_timeout():
 	blinky.change_normal()
@@ -134,6 +147,7 @@ func _spawn_pacman():
 	pacman.tilemap = tilemap
 	pacman.position = pacman_spawn.position if pacman_pos == null else pacman_pos
 	pacman.start_invincible = pacman_pos == null
+	pacman.flip_input = flipped
 	pacman.died.connect(func():
 		pacman = null
 		GameManager.lose_health()
