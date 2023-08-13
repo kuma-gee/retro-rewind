@@ -7,6 +7,9 @@ extends CharacterBody2D
 @export var fleeing = false
 @export var look_ahead = 0
 
+@onready var pupil_left := $EyeLeft/Pupil
+@onready var pupil_right := $EyeRight/Pupil
+
 @onready var respawn_timer := $RespawnTimer
 @onready var collision := $CollisionShape2D
 @onready var sprite := $Sprite2D
@@ -67,6 +70,9 @@ func _process(_delta):
 		return
 	
 	if moving != null:
+		var dir = position.direction_to(moving)
+		pupil_left.position = dir
+		pupil_right.position = dir
 		return
 	
 	var result = _get_target()
