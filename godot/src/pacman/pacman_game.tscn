@@ -583,7 +583,7 @@ autostart = true
 
 [node name="Cache" type="Node" parent="."]
 script = ExtResource("8_4gmrs")
-properties = Array[String](["pacman_pos", "points", "powerup_timeleft"])
+properties = Array[String](["pacman_pos", "points", "powerup_timeleft", "blink_called"])
 
 [node name="PowerupTimer" type="Timer" parent="."]
 wait_time = 10.0
