@@ -63,6 +63,7 @@ func start_game(game = current_game):
 	game_ui.visible = game != null
 	breakout_score = 0
 	pacman_score = 0
+	glitch_count = 0
 	_update_score()
 	_change_game(game, false)
 	
