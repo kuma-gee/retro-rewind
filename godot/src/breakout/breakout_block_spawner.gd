@@ -27,6 +27,7 @@ func _create_block(x: int, y: int):
 	block.value = _get_block_value(y)
 	add_child(block)
 	var pos = Vector2(x, y)
+	block.pos = pos
 	block.removed.connect(func(): positions.erase(pos))
 	if positions.has(pos):
 		block.global_position = positions[pos]
@@ -44,19 +45,21 @@ func _get_block_value(row: int):
 
 	return BreakoutBlock.Value.YELLOW
 
+func glitch_move_blocks():
+	for child in get_children():
+		if child is BreakoutBlock:
+			child.set_random_move()
+
 func glitch_blocks():
 	for child in get_children():
-		child.global_position += Vector2(
-			randf_range(min_glitch_offset_x, max_glitch_offset_x),
-			randf_range(min_glitch_offset_y, max_glitch_offset_y)
-		)
+		if child is BreakoutBlock:
+			child.global_position += Vector2(
+				randf_range(min_glitch_offset_x, max_glitch_offset_x),
+				randf_range(min_glitch_offset_y, max_glitch_offset_y)
+			)
 
 func reset_blocks():
-	for i in get_child_count():
-		var child = get_child(i)
-		child.global_position = positions[_idx_to_coord(i)]
-
-func _idx_to_coord(i: int):
-	var y = floor(i / float(column))
-	var x = i - (y * column) - 1
-	return Vector2(x, y)
+	for child in get_children():
+		if child is BreakoutBlock:
+			child.remove_random_move()
+			child.global_position = positions[child.pos]

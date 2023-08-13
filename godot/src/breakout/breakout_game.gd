@@ -7,16 +7,21 @@ extends Node2D
 var glitches = [
 	_camera_rotation_glitch,
 	_blocks_glitch,
+	_blocks_move_glitch,
 ]
 var last_glitch = null
 
 func random_glitch():
 	var glitch = glitches.pick_random()
-	while glitch == last_glitch:
+	while glitch == last_glitch and glitches.size() > 1:
 		glitch = glitches.pick_random()
 	
 	glitch.call()
 	last_glitch = glitch
+
+func _blocks_move_glitch():
+	block_spawner.glitch_move_blocks()
+	get_tree().create_timer(8.0).timeout.connect(func(): GameManager.glitch(func(): block_spawner.reset_blocks(), true))
 
 func _blocks_glitch():
 	block_spawner.glitch_blocks()

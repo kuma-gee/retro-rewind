@@ -37,6 +37,12 @@ rotation = 1.5708
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D3"]
 shape = SubResource("RectangleShape2D_wvwcc")
 
+[node name="CacheProperties" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("5_k1dv6")
+properties = Array[String](["positions"])
+node_path = NodePath("../BreakoutBlockSpawner")
+
 [node name="BreakoutBlockSpawner" type="Marker2D" parent="."]
 process_mode = 3
 position = Vector2(39, 41)
@@ -49,11 +55,6 @@ min_glitch_offset_x = -10
 min_glitch_offset_y = -10
 max_glitch_offset_x = 10
 max_glitch_offset_y = 10
-
-[node name="CacheProperties" type="Node" parent="BreakoutBlockSpawner"]
-process_mode = 3
-script = ExtResource("5_k1dv6")
-properties = Array[String](["positions"])
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 120)
