@@ -21,7 +21,7 @@ enum Game {
 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.PACMAN
+var current_game := Game.BREAKOUT
 
 var player_name := ""
 var player_position = -1
@@ -29,7 +29,7 @@ var player_position = -1
 var waiting_continue := false
 var gameover := false
 var glitch_tween
-var glitch_count = 1
+var glitch_count = 0
 
 func _ready():
 	game_ui.hide()
