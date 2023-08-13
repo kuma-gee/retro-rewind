@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://crny5uvk3tm4h"]
+[gd_scene load_steps=11 format=3 uid="uid://crny5uvk3tm4h"]
 
 [ext_resource type="Script" path="res://src/game_manager.gd" id="1_c0r20"]
 [ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_mhbye"]
@@ -8,6 +8,7 @@
 [ext_resource type="LabelSettings" uid="uid://c584vf1vlxhtw" path="res://src/title.tres" id="5_oa80m"]
 [ext_resource type="Script" path="res://src/Keyboard.gd" id="6_xvtbm"]
 [ext_resource type="PackedScene" uid="uid://cyl56bx4nrgug" path="res://src/ranking.tscn" id="7_ibfye"]
+[ext_resource type="Texture2D" uid="uid://dpuyohamkgyfu" path="res://assets/title.png" id="9_dn8di"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vyp5a"]
 shader = ExtResource("2_defhv")
@@ -202,6 +203,25 @@ theme = ExtResource("1_mhbye")
 
 [node name="Ranking" parent="CanvasLayer/Ranking/Ranking" instance=ExtResource("7_ibfye")]
 layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer2"]
+modulate = Color(0.643137, 0.643137, 0.643137, 1)
+layout_mode = 2
+texture = ExtResource("9_dn8di")
+expand_mode = 2
+stretch_mode = 5
 
 [node name="Screen" type="ColorRect" parent="CanvasLayer"]
 material = SubResource("ShaderMaterial_vyp5a")
