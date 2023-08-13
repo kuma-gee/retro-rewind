@@ -26,6 +26,12 @@ var powerup_pos = [
 	Vector2i(17, 16),
 ]
 
+var glitches = [
+	_move_points,
+	_shuffle_points
+]
+var last_glitch = null
+
 func _ready():
 	_spawn_points()
 	_spawn_pacman.call_deferred()
@@ -34,7 +40,19 @@ func _ready():
 		powerup_timer.start(powerup_timeleft)
 
 func random_glitch():
-	_shuffle_points()
+	var glitch = glitches.pick_random()
+	while glitch == last_glitch and glitches.size() > 1:
+		glitch = glitches.pick_random()
+	
+	glitch.call()
+	last_glitch = glitch
+
+func _move_points():
+	for child in tilemap.get_children():
+		if not child is PacmanPoint:
+			continue
+		child.enable_move = true
+	get_tree().create_timer(8.0).timeout.connect(func(): GameManager.glitch(func(): _restore_points(), true))
 
 func _shuffle_points():
 	var positions = tilemap.possible_positions()
@@ -55,6 +73,7 @@ func _restore_points():
 		if not child is PacmanPoint:
 			continue
 		
+		child.restore()
 		child.position = points[child.pos]
 
 func _process(_delta):
@@ -83,6 +102,7 @@ func _spawn_points():
 			var scene = powerup_scene if v in powerup_pos else point_scene
 			var point = scene.instantiate()
 			point.pos = v
+			point.tilemap = tilemap
 			point.position = tilemap.map_to_local(v)
 			point.collected.connect(func():
 				points.erase(v)

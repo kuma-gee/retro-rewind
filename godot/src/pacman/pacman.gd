@@ -59,3 +59,8 @@ func _on_area_2d_body_entered(body):
 	if body is PacmanGhost:
 		body.caught()
 		GameManager.add_pacman_score(50)
+
+
+func _on_area_2d_area_entered(area):
+	if area is PacmanPoint:
+		area.collect()

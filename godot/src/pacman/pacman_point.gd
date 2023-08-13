@@ -3,9 +3,43 @@ extends Area2D
 
 signal collected
 
+var enable_move = false
+var speed = 3.0
+var tilemap: PacmanMap
+
+var moving = null
+var return_dir
+var tw: Tween
+
 var pos: Vector2i
 
-func _on_area_entered(_area):
+func restore():
+	enable_move = false
+	return_dir = null
+	if tw:
+		tw.kill()
+
+func collect():
 	collected.emit()
 	GameManager.add_pacman_score(1)
 	queue_free()
+
+func _process(delta):
+	if moving != null or not enable_move:
+		return
+
+	var dirs = _possible_dirs()
+	if not dirs.is_empty():
+		var random_dir = dirs.pick_random()
+		_move(random_dir)
+	else: # reached a deadend
+		_move(return_dir)
+
+func _move(dir):
+	var result = tilemap.do_move(self, dir, func(): moving = null, speed, true)
+	moving = result[0]
+	tw = result[1]
+	return_dir = -dir
+
+func _possible_dirs():
+	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
