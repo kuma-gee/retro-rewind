@@ -41,9 +41,7 @@ func _ready():
 
 func _set_catchable(c):
 	catchable = c
-	if blink_tw:
-		blink_tw.kill()
-		modulate = Color.WHITE
+	_stop_blink()
 	
 	if catchable:
 		fleeing = true
@@ -60,8 +58,7 @@ func blink():
 		_do_blink()
 
 func _do_blink():
-	if blink_tw:
-		blink_tw.kill()
+	_stop_blink()
 	blink_tw = create_tween()
 	blink_tw.set_loops()
 	blink_tw.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
@@ -80,6 +77,12 @@ func change_normal():
 func caught():
 	return_spawn = true
 	current_modulate = Color.TRANSPARENT
+
+func _stop_blink():
+	if blink_tw:
+		blink_tw.kill()
+		blink_tw = null
+	modulate = Color.WHITE
 
 func _get_target():
 	if return_spawn:

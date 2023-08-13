@@ -5,7 +5,7 @@ enum Game {
 	PACMAN,
 }
 
-@export var game_switch_chance := 0.2
+@export var game_switch_chance := 0.05
 
 @export var score_label: Label
 @export var screen: Control
@@ -21,7 +21,7 @@ enum Game {
 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.BREAKOUT
+var current_game := Game.PACMAN
 
 var player_name := ""
 var player_position = -1
@@ -29,6 +29,7 @@ var player_position = -1
 var waiting_continue := false
 var gameover := false
 var glitch_tween
+var glitch_count = 1
 
 func _ready():
 	game_ui.hide()
@@ -159,13 +160,15 @@ func _set_glitch_time(time):
 
 func _on_glitch_timer_timeout():
 	glitch(func():
-		if randf() <= game_switch_chance:
+		if randf() <= game_switch_chance * glitch_count:
 			var games = []
 			for g in Game.values():
 				if g != current_game:
 					games.append(g)
 			_change_game(games.pick_random())
+			glitch_count = 0
 			return 1.0
 		else:
 			get_tree().current_scene.random_glitch()
+			glitch_count += 1
 	)
