@@ -1,6 +1,41 @@
 class_name PacmanMap
 extends TileMap
 
+var exclude_pos = [
+	Vector2i(0, 8),
+	Vector2i(1, 8),
+	Vector2i(2, 8),
+	Vector2i(0, 12),
+	Vector2i(1, 12),
+	Vector2i(2, 12),
+	Vector2i(18, 8),
+	Vector2i(17, 8),
+	Vector2i(16, 8),
+	Vector2i(18, 12),
+	Vector2i(17, 12),
+	Vector2i(16, 12),
+	Vector2i(8, 10),
+	Vector2i(9, 10),
+	Vector2i(10, 10),
+	Vector2i(9, 9),
+]
+
+func possible_positions():
+	var result = []
+	var rect = get_used_rect()
+	for x in rect.size.x:
+		for y in rect.size.y:
+			var v = Vector2i(x, y)
+			if v in exclude_pos:
+				continue
+				
+			var cell = get_cell_source_id(0, v)
+			if cell != -1:
+				continue
+			
+			result.append(v)
+	return result
+
 func possible_dir(node_pos: Vector2, is_map = false):
 	var result = []
 	var pos = local_to_map(node_pos) if not is_map else Vector2i(node_pos)

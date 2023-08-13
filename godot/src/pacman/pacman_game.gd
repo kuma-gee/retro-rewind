@@ -18,24 +18,6 @@ var pacman_pos
 var powerup_timeleft := 0.0
 
 var points = {}
-var exclude_pos = [
-	Vector2i(0, 8),
-	Vector2i(1, 8),
-	Vector2i(2, 8),
-	Vector2i(0, 12),
-	Vector2i(1, 12),
-	Vector2i(2, 12),
-	Vector2i(18, 8),
-	Vector2i(17, 8),
-	Vector2i(16, 8),
-	Vector2i(18, 12),
-	Vector2i(17, 12),
-	Vector2i(16, 12),
-	Vector2i(8, 10),
-	Vector2i(9, 10),
-	Vector2i(10, 10),
-	Vector2i(9, 9),
-]
 
 var powerup_pos = [
 	Vector2i(1, 3),
@@ -51,6 +33,30 @@ func _ready():
 	if powerup_timeleft > 0:
 		powerup_timer.start(powerup_timeleft)
 
+func random_glitch():
+	_shuffle_points()
+
+func _shuffle_points():
+	var positions = tilemap.possible_positions()
+	
+	for child in tilemap.get_children():
+		if not child is PacmanPoint:
+			continue
+		
+		var pos = positions.pick_random()
+		positions.erase(pos)
+		
+		child.position = tilemap.map_to_local(pos)
+	
+	get_tree().create_timer(8.0).timeout.connect(func(): GameManager.glitch(func(): _restore_points(), true))
+
+func _restore_points():
+	for child in tilemap.get_children():
+		if not child is PacmanPoint:
+			continue
+		
+		child.position = points[child.pos]
+
 func _process(_delta):
 	powerup_timeleft = powerup_timer.time_left
 	pacman_pos = pacman.position if pacman else null
@@ -62,32 +68,34 @@ func _activate_powerup():
 	clyde.change_running()
 	powerup_timer.start()
 
+func _on_powerup_timer_timeout():
+	blinky.change_normal()
+	pinky.change_normal()
+	inky.change_normal()
+	clyde.change_normal()
+
+
 func _spawn_points():
-	var rect = tilemap.get_used_rect()
+	var positions = tilemap.possible_positions()
 	var new = points.is_empty()
-	for x in rect.size.x:
-		for y in rect.size.y:
-			var v = Vector2i(x, y)
-			if v in exclude_pos:
-				continue
-			
-			var cell = tilemap.get_cell_source_id(0, v)
-			if cell == -1 and (new or points.has(v)):
-				var scene = powerup_scene if v in powerup_pos else point_scene
-				var point = scene.instantiate()
-				point.position = tilemap.map_to_local(v)
-				point.collected.connect(func():
-					points.erase(v)
-					if v in powerup_pos:
-						_activate_powerup()
-					if points.is_empty():
-						get_tree().paused = true
-						await get_tree().create_timer(1.0).timeout
-						_spawn_points()
-						get_tree().paused = false
-				)
-				points[v] = point.position
-				tilemap.add_child(point)
+	for v in positions:
+		if (new or points.has(v)):
+			var scene = powerup_scene if v in powerup_pos else point_scene
+			var point = scene.instantiate()
+			point.pos = v
+			point.position = tilemap.map_to_local(v)
+			point.collected.connect(func():
+				points.erase(v)
+				if v in powerup_pos:
+					_activate_powerup()
+				if points.is_empty():
+					get_tree().paused = true
+					await get_tree().create_timer(1.0).timeout
+					_spawn_points()
+					get_tree().paused = false
+			)
+			points[v] = point.position
+			tilemap.add_child(point)
 
 func _spawn_pacman():
 	pacman = pacman_scene.instantiate()
@@ -112,13 +120,3 @@ func _on_release_ghost_timer_timeout():
 	if not inky.move:
 		inky.move = true
 		return
-
-func random_glitch():
-	pass
-
-
-func _on_powerup_timer_timeout():
-	blinky.change_normal()
-	pinky.change_normal()
-	inky.change_normal()
-	clyde.change_normal()
