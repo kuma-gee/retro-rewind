@@ -56,6 +56,7 @@ func _back_to_start():
 	get_tree().change_scene_to_file("res://src/game.tscn")
 	get_tree().paused = false
 	waiting_continue = false
+	CacheManager.clear()
 
 func start_game(game = current_game):
 	game_ui.visible = game != null

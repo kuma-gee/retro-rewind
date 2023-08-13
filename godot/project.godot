@@ -37,6 +37,10 @@ window/stretch/mode="canvas_items"
 window/size/width=1920
 window/size/height=1080
 
+[editor]
+
+export/convert_text_resources_to_binary=false
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/silent_wolf/plugin.cfg")

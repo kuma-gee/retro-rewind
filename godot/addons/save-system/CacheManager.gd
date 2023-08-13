@@ -5,6 +5,8 @@ const PERSIST_GROUP = "Persist"
 var logger = Logger.new("CacheManager")
 var scene_data = {}
 
+func clear():
+	scene_data = {}
 
 func save_scene():
 	var scene = get_tree().current_scene
