@@ -517,7 +517,7 @@ inky = NodePath("TileMap/Inky")
 clyde = NodePath("TileMap/Clyde")
 
 [node name="TileMap" type="TileMap" parent="."]
-position = Vector2(78.8, 14)
+position = Vector2(68, 14)
 scale = Vector2(1.2, 1.2)
 tile_set = SubResource("TileSet_f0qml")
 format = 2
@@ -588,6 +588,10 @@ properties = Array[String](["pacman_pos", "points", "powerup_timeleft"])
 [node name="PowerupTimer" type="Timer" parent="."]
 wait_time = 8.0
 one_shot = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(160, 120)
+ignore_rotation = false
 
 [connection signal="timeout" from="ReleaseGhostTimer" to="." method="_on_release_ghost_timer_timeout"]
 [connection signal="timeout" from="PowerupTimer" to="." method="_on_powerup_timer_timeout"]

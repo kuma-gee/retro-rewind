@@ -10,6 +10,7 @@ extends Node2D
 @export var inky: PacmanGhost
 @export var clyde: PacmanGhost
 
+@onready var camera := $Camera2D
 @onready var tilemap: TileMap = $TileMap
 @onready var powerup_timer: Timer = $PowerupTimer
 
@@ -28,7 +29,8 @@ var powerup_pos = [
 
 var glitches = [
 	_move_points,
-	_shuffle_points
+	_shuffle_points,
+	_rotate_camera
 ]
 var last_glitch = null
 
@@ -46,6 +48,16 @@ func random_glitch():
 	
 	glitch.call()
 	last_glitch = glitch
+
+func _rotate_camera():
+	camera.rotation_degrees = 180
+	pacman.flip_input = true
+	get_tree().create_timer(8.0).timeout.connect(func(): 
+		GameManager.glitch(func():
+			camera.rotation_degrees = 0
+			pacman.flip_input = false
+		, true)
+	)
 
 func _move_points():
 	for child in tilemap.get_children():

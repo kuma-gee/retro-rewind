@@ -16,6 +16,7 @@ var tw: Tween
 var motion = Vector2.ZERO
 
 var start_invincible = true
+var flip_input = false
 
 func _ready():
 	if start_invincible:
@@ -40,6 +41,10 @@ func _physics_process(delta):
 	var motion_x = ceil(input.get_action_strength("move_right")) - ceil(input.get_action_strength("move_left"))
 	var motion_y = ceil(input.get_action_strength("move_down")) - ceil(input.get_action_strength("move_up"))
 	motion = Vector2i(motion_x, motion_y)
+	if flip_input:
+		motion.x *= -1
+		motion.y *= -1
+	
 	moving = tilemap.do_move(self, motion, func(): moving = null)
 
 
