@@ -3,6 +3,7 @@ extends Node
 
 @export var properties: Array[String]
 @export var node_path: NodePath
+@export var debug = false
 
 var logger = Logger.new("CacheProperties")
 
@@ -23,7 +24,8 @@ func save_data():
 	for prop in properties:
 		data[prop] = _get_node().get(prop)
 
-	#logger.debug("Save for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
+	if debug:
+		logger.debug("Save for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
 	return data
 
 func _enter_tree():
@@ -32,6 +34,7 @@ func _enter_tree():
 		load_data(data)
 
 func load_data(data: Dictionary):
-	#logger.debug("Load for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
+	if debug:
+		logger.debug("Load for %s: %s" % [get_tree().current_scene.get_path_to(get_parent()), str(data)])
 	for prop in data:
 		_get_node().set(prop, data[prop])

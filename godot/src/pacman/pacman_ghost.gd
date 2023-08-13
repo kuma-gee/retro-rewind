@@ -22,7 +22,7 @@ var return_dir = Vector2i.ZERO
 
 var flee_threshold = 0.01
 var speed = 0.25
-var catchable = true : set = _set_catchable
+var catchable = false : set = _set_catchable
 
 var return_spawn = false
 var respawn_time_left := 0.0
