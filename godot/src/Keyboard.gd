@@ -8,13 +8,17 @@ signal submitted(text)
 const a = 97
 const z = 122
 
-var typed = ""
+var typed = "" : set = _set_typed
+
+func _set_typed(v):
+	typed = v
+	label.text = typed
 
 func _ready():
 	submit_btn.pressed.connect(func():
 		if typed != "":
 			submitted.emit(typed)
-			typed = ""
+			self.typed = ""
 	)
 	
 	for c in range(a, z + 1):
@@ -32,7 +36,6 @@ func _ready():
 
 func _type_char(char):
 	if char == null:
-		typed = typed.substr(0, typed.length() - 1)
+		self.typed = typed.substr(0, typed.length() - 1)
 	elif typed.length() < 15:
-		typed += char
-	label.text = typed
+		self.typed += char

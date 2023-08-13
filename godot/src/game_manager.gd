@@ -17,7 +17,9 @@ enum Game {
 @export var end_score: Label
 
 @onready var glitch_timer := $GlitchTimer
-@onready var health := hp_container.get_child_count() 
+
+
+var health := 0 : set = _set_health 
 
 var breakout_score := 0
 var pacman_score := 0
@@ -43,6 +45,12 @@ func _ready():
 			"log_level": 1
 		})
 
+func _set_health(hp):
+	health = hp
+	for i in hp_container.get_child_count():
+		var node = hp_container.get_child(i)
+		node.visible = i < health
+
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_accept"):
 		_back_to_start()
@@ -64,6 +72,8 @@ func start_game(game = current_game):
 	breakout_score = 0
 	pacman_score = 0
 	glitch_count = 0
+	self.health = hp_container.get_child_count()
+	
 	_update_score()
 	_change_game(game, false)
 	
@@ -78,10 +88,7 @@ func _change_game(game, save = true):
 	glitch_timer.start()
 
 func lose_health():
-	health -= 1
-	for i in hp_container.get_child_count():
-		var hp = hp_container.get_child(i)
-		hp.visible = i < health
+	self.health -= 1
 	
 	if health < 0:
 		get_tree().paused = true
@@ -96,6 +103,7 @@ func _on_keyboard_submitted(text):
 	gameover_container.hide()
 	player_name = text
 	
+	ranking.loading_data()
 	ranking_container.show()
 	
 	var total_score = _get_total_score()
@@ -171,7 +179,7 @@ func _on_glitch_timer_timeout():
 				if g != current_game:
 					games.append(g)
 			_change_game(games.pick_random())
-			glitch_count = 0
+			glitch_count = 1 # allow small chance to immediately change change
 			return 1.0
 		else:
 			get_tree().current_scene.random_glitch()

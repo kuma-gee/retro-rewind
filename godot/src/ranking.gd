@@ -4,6 +4,13 @@ extends Control
 @export var loading: Control
 @export var grid: GridContainer
 
+var labels = []
+
+func loading_data():
+	loading.show()
+	for label in labels:
+		grid.remove_child(label)
+
 func show_scores(scores: Array, current_pos):
 	loading.hide()
 	for score in scores:
@@ -17,4 +24,5 @@ func _label(text: String, active: bool):
 	l.text = text
 	if active:
 		l.modulate = Color.RED
+	labels.append(l)
 	return l
