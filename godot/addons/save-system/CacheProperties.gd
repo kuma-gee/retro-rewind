@@ -10,7 +10,13 @@ func _ready():
 	add_to_group(CacheManager.PERSIST_GROUP)
 
 func _get_node():
-	return get_parent() if node_path == null else get_node(node_path)
+	var node = null
+	if node_path != null and node_path != NodePath(""):
+		node = get_node(node_path)
+	if node == null:
+		node = get_parent()
+	
+	return node
 
 func save_data():
 	var data = {}

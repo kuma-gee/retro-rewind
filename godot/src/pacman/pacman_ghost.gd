@@ -14,34 +14,50 @@ extends CharacterBody2D
 @onready var collision := $CollisionShape2D
 @onready var sprite := $Sprite2D
 @onready var orig_modulate = sprite.modulate
-@onready var current_modulate = orig_modulate
 
+var current_modulate = null
 var moving
 var local_paths = []
 var return_dir = Vector2i.ZERO
 
 var flee_threshold = 0.01
 var speed = 0.25
-var catchable = true
+var catchable = true : set = _set_catchable
 
 var return_spawn = false
+var respawn_time_left := 0.0
 
 func _ready():
 	collision.disabled = true
+	if current_modulate == null:
+		current_modulate = orig_modulate
+	
+	sprite.modulate = current_modulate
+	
+	if respawn_time_left > 0:
+		respawn_timer.start(respawn_time_left)
+
+func _set_catchable(c):
+	catchable = c
+	if catchable:
+		fleeing = true
+		current_modulate = Color.from_string("1b39bf", Color.BLUE)
+		if return_spawn:
+			current_modulate = Color.TRANSPARENT
+	else:
+		catchable = false
+		fleeing = false
+		current_modulate = orig_modulate
 
 func _set_move(m):
 	move = m
 
 func change_running():
-	catchable = true
-	fleeing = true
-	current_modulate = Color.from_string("1b39bf", Color.BLUE)
+	self.catchable = true
 	
 func change_normal():
 	if catchable and not return_spawn:
-		catchable = false
-		fleeing = false
-		current_modulate = orig_modulate
+		self.catchable = false
 
 func caught():
 	return_spawn = true
@@ -67,6 +83,7 @@ func _get_target():
 func _process(_delta):
 	sprite.modulate = current_modulate
 	collision.disabled = not catchable
+	respawn_time_left = respawn_timer.time_left
 	
 	if not move:
 		return

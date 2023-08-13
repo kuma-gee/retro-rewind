@@ -44,7 +44,7 @@ shader_parameter/glitch_time = 5.0
 [node name="GameManager" type="Node" node_paths=PackedStringArray("score_label", "screen", "hp_container", "game_ui", "gameover_container", "ranking_container", "ranking", "end_score")]
 process_mode = 3
 script = ExtResource("1_c0r20")
-game_switch_chance = 0.0
+game_switch_chance = 1.0
 score_label = NodePath("CanvasLayer/MarginContainer/HBoxContainer/Score")
 screen = NodePath("CanvasLayer/Screen")
 hp_container = NodePath("CanvasLayer/MarginContainer/HBoxContainer/HpContainer")
@@ -53,6 +53,17 @@ gameover_container = NodePath("CanvasLayer/Gameover")
 ranking_container = NodePath("CanvasLayer/Ranking")
 ranking = NodePath("CanvasLayer/Ranking/Ranking/Ranking")
 end_score = NodePath("CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/EndScore")
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.0705882, 0.0705882, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2

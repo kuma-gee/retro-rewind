@@ -15,6 +15,7 @@ extends Node2D
 
 var pacman
 var pacman_pos
+var powerup_timeleft := 0.0
 
 var points = {}
 var exclude_pos = [
@@ -46,6 +47,13 @@ var powerup_pos = [
 func _ready():
 	_spawn_points()
 	_spawn_pacman.call_deferred()
+	
+	if powerup_timeleft > 0:
+		powerup_timer.start(powerup_timeleft)
+
+func _process(_delta):
+	powerup_timeleft = powerup_timer.time_left
+	pacman_pos = pacman.position if pacman else null
 
 func _activate_powerup():
 	blinky.change_running()
@@ -93,9 +101,6 @@ func _spawn_pacman():
 		_spawn_pacman()
 	)
 	tilemap.add_child(pacman)
-
-func _process(_delta):
-	pacman_pos = pacman.position if pacman else null
 
 func _on_release_ghost_timer_timeout():
 	if not pinky.move:
