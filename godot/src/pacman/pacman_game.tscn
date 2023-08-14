@@ -579,6 +579,13 @@ spawn_pos = NodePath("../GhostSpawn")
 tilemap = NodePath("..")
 look_ahead = 1
 
+[node name="ColorRect" type="ColorRect" parent="TileMap"]
+offset_left = 70.0
+offset_top = 75.0
+offset_right = 83.0
+offset_bottom = 78.0
+color = Color(0.137255, 0.137255, 0.52549, 0.470588)
+
 [node name="ReleaseGhostTimer" type="Timer" parent="."]
 wait_time = 4.0
 autostart = true

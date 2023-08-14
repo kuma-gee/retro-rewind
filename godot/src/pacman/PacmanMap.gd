@@ -20,6 +20,8 @@ var exclude_pos = [
 	Vector2i(9, 9),
 ]
 
+var ghost_door = Vector2i(9, 9)
+
 func possible_positions():
 	var result = []
 	var rect = get_used_rect()
@@ -44,16 +46,16 @@ func possible_dir(node_pos: Vector2, is_map = false):
 			result.append(dir)
 	return result
 
-func do_move(node: Node2D, motion: Vector2i, finish_fn: Callable, speed = 0.2, return_tw = false):
+func do_move(node: Node2D, motion: Vector2i, finish_fn: Callable, speed = 0.2, allow_ghost_door = false, return_tw = false):
 	var pos = local_to_map(node.position)
 	if motion.x != 0:
 		var dest = pos + Vector2i(motion.x, 0)
-		if not _is_wall(dest):
+		if not _is_wall(dest) and (dest != ghost_door or allow_ghost_door):
 			return _move(node, dest, finish_fn, speed, return_tw)
 			
 	if motion.y != 0:
 		var dest = pos + Vector2i(0, motion.y)
-		if not _is_wall(dest):
+		if not _is_wall(dest) and (dest != ghost_door or allow_ghost_door):
 			return _move(node, dest, finish_fn, speed, return_tw)
 
 func _is_wall(p: Vector2i):

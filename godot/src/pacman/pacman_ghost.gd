@@ -213,7 +213,7 @@ func _possible_dirs():
 	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
 
 func _move(dir):
-	moving = tilemap.do_move(self, dir, func(): moving = null, speed)
+	moving = tilemap.do_move(self, dir, func(): moving = null, speed, true)
 	return_dir = -dir
 
 #func _draw():

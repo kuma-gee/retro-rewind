@@ -40,7 +40,7 @@ func _process(delta):
 		_move(return_dir)
 
 func _move(dir):
-	var result = tilemap.do_move(self, dir, func(): moving = null, speed, true)
+	var result = tilemap.do_move(self, dir, func(): moving = null, speed, false, true)
 	moving = result[0]
 	tw = result[1]
 	return_dir = -dir
