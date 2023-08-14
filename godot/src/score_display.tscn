@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://4s2hs6p3raca"]
+
+[ext_resource type="Script" path="res://src/ScoreDisplay.gd" id="1_e7hlj"]
+[ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_kigtv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_si43x"]
+font_size = 6
+font_color = Color(0.243137, 0.313726, 0.968627, 1)
+
+[node name="ScoreDisplay" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_kigtv")
+label_settings = SubResource("LabelSettings_si43x")
+script = ExtResource("1_e7hlj")

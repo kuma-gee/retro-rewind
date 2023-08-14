@@ -1,6 +1,7 @@
 class_name Pacman
 extends CharacterBody2D
 
+signal caught_ghost(pos)
 signal died()
 
 @export var tilemap: TileMap
@@ -8,6 +9,7 @@ signal died()
 @onready var input: PlayerInput = $Input
 @onready var collision := $CollisionShape2D
 @onready var invincible_timer := $InvincibilityTimer
+@onready var ghost_death := $GhostDeath
 
 @onready var orig_modul = modulate
 
@@ -65,9 +67,11 @@ func _on_invincibility_timer_timeout():
 
 
 func _on_area_2d_body_entered(body):
-	if body is PacmanGhost:
+	if body is PacmanGhost and not body.return_spawn:
 		body.caught()
-		GameManager.add_pacman_score(100)
+		ghost_death.play()
+		caught_ghost.emit(body.global_position)
+		GameManager.freeze()
 
 
 func _on_area_2d_area_entered(area):

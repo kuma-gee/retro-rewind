@@ -16,6 +16,7 @@ enum Game {
 @export var ranking: Ranking
 @export var end_score: Label
 
+@onready var frame_freeze := $FrameFreeze
 @onready var glitch_timer := $GlitchTimer
 
 
@@ -54,6 +55,9 @@ func _set_health(hp):
 func _unhandled_input(event):
 	if event.is_action_pressed("ui_accept"):
 		_back_to_start()
+
+func freeze():
+	frame_freeze.freeze(0.01, 1.5)
 
 func _back_to_start():
 	if not waiting_continue: return

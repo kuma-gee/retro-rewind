@@ -5,6 +5,8 @@ extends Node2D
 @export var pacman_scene: PackedScene
 @export var pacman_spawn: Node2D
 
+@export var score_scene: PackedScene
+
 @export var blinky: PacmanGhost
 @export var pinky: PacmanGhost
 @export var inky: PacmanGhost
@@ -21,6 +23,7 @@ var pacman_pos
 var powerup_timeleft := 0.0
 var blink_called = true
 var flipped = false
+var ghost_combo = 1
 
 var points = {}
 
@@ -125,6 +128,7 @@ func _on_powerup_timer_timeout():
 	pinky.change_normal()
 	inky.change_normal()
 	clyde.change_normal()
+	ghost_combo = 1
 
 
 func _spawn_points():
@@ -156,6 +160,16 @@ func _spawn_pacman():
 	pacman.position = pacman_spawn.position if pacman_pos == null else pacman_pos
 	pacman.start_invincible = pacman_pos == null
 	pacman.flip_input = flipped
+	pacman.caught_ghost.connect(func(pos):
+		var score = 100 * ghost_combo
+		GameManager.add_pacman_score(score)
+		ghost_combo += 1
+		
+		var score_label = score_scene.instantiate()
+		score_label.text = str(score)
+		score_label.global_position = pos
+		get_tree().current_scene.add_child(score_label)
+	)
 	pacman.died.connect(func():
 		pacman = null
 		death_sound.play()

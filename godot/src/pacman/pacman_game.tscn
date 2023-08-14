@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://db3xb7nl00n4c"]
+[gd_scene load_steps=15 format=3 uid="uid://db3xb7nl00n4c"]
 
 [ext_resource type="Script" path="res://src/pacman/pacman_game.gd" id="1_f8w1g"]
 [ext_resource type="Texture2D" uid="uid://c2yt8wjtk8mlr" path="res://assets/Tiles.png" id="1_odsj4"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://blv8x3mavhdlp" path="res://src/pacman/pacman_power_up.tscn" id="2_m281w"]
 [ext_resource type="PackedScene" uid="uid://cn7igr3887vg7" path="res://src/pacman/pacman.tscn" id="4_t4bjs"]
 [ext_resource type="Script" path="res://src/pacman/PacmanMap.gd" id="4_wyvvg"]
+[ext_resource type="PackedScene" uid="uid://4s2hs6p3raca" path="res://src/score_display.tscn" id="5_pnpiv"]
 [ext_resource type="PackedScene" uid="uid://bkoohkb4probt" path="res://src/pacman/pacman_ghost.tscn" id="6_bjopi"]
 [ext_resource type="PackedScene" uid="uid://7fl2mknw74t5" path="res://src/pacman/clyde.tscn" id="7_u03jm"]
 [ext_resource type="Script" path="res://addons/save-system/CacheProperties.gd" id="8_4gmrs"]
@@ -512,6 +513,7 @@ powerup_scene = ExtResource("2_m281w")
 point_scene = ExtResource("2_2iipx")
 pacman_scene = ExtResource("4_t4bjs")
 pacman_spawn = NodePath("TileMap/PacmanSpawn")
+score_scene = ExtResource("5_pnpiv")
 blinky = NodePath("TileMap/Blinky")
 pinky = NodePath("TileMap/Pinky")
 inky = NodePath("TileMap/Inky")
