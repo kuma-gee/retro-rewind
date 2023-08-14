@@ -220,13 +220,13 @@ func _move(dir):
 	moving = tilemap.do_move(self, dir, func(): moving = null, speed, true)
 	return_dir = -dir
 
-func _draw():
-	if local_paths.size() > 0:
-		var start = local_paths[0]
-		for i in range(1, local_paths.size()):
-			var end = local_paths[i]
-			draw_line(start, end, Color.RED, 2)
-			start = end
+#func _draw():
+#	if local_paths.size() > 0:
+#		var start = local_paths[0]
+#		for i in range(1, local_paths.size()):
+#			var end = local_paths[i]
+#			draw_line(start, end, Color.RED, 2)
+#			start = end
 
 
 func _on_area_2d_body_entered(body):

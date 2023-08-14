@@ -1,5 +1,7 @@
 extends Marker2D
 
+signal cleared()
+
 @export var column := 12
 @export var rows := 8
 
@@ -36,8 +38,10 @@ func _create_block(x: int, y: int):
 	block.removed.connect(func():
 		positions.erase(pos)
 		if positions.is_empty():
+			SoundManager.cleared()
 			get_tree().paused = true
 			await get_tree().create_timer(1.0).timeout
+			cleared.emit()
 			_create_blocks()
 			get_tree().paused = false
 	)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2eg4xfv7ro3l"]
+[gd_scene load_steps=7 format=3 uid="uid://c2eg4xfv7ro3l"]
 
 [ext_resource type="Script" path="res://src/breakout/breakout_player.gd" id="1_hyx73"]
 [ext_resource type="PackedScene" uid="uid://cxqsgshr7uohb" path="res://src/breakout/breakout_ball.tscn" id="2_e4s4j"]
 [ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="3_8m4tx"]
 [ext_resource type="Script" path="res://addons/save-system/CacheProperties.gd" id="4_1c1c2"]
+[ext_resource type="AudioStream" uid="uid://y5jsphcur4rl" path="res://assets/death.wav" id="5_gv7jk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q7cjd"]
 size = Vector2(20, 4)
@@ -43,6 +44,10 @@ properties = Array[String](["global_position", "ball_position", "ball_motion", "
 
 [node name="BallSpawnTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="LostBall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_gv7jk")
+volume_db = -10.0
 
 [connection signal="just_pressed" from="Input" to="." method="_on_input_just_pressed"]
 [connection signal="timeout" from="BallSpawnTimer" to="." method="_on_ball_spawn_timer_timeout"]

@@ -9,8 +9,10 @@ extends StaticBody2D
 
 @export var flip_input := false
 
+@onready var lost_ball_sound := $LostBall
 @onready var input := $Input
 @onready var timer := $BallSpawnTimer
+@onready var orig_pos := global_position
 
 var spawned_ball
 
@@ -25,10 +27,20 @@ var motion = 0
 func _ready():
 	_spawn_ball.call_deferred()
 
+func reset():
+	active_ball = spawned_ball
+	spawned_ball = null
+	
+	active_ball.motion = Vector2.ZERO
+	active_ball.combo = 1.0
+	ball_remote.remote_path = ball_remote.get_path_to(active_ball)
+	global_position = orig_pos
+
 func _spawn_ball():
 	active_ball = ball_scene.instantiate() as BreakoutBall
 	active_ball.out_of_bound.connect(func():
 		spawned_ball = null
+		lost_ball_sound.play()
 		GameManager.lose_health(false)
 		timer.start()
 	)

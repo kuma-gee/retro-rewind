@@ -147,15 +147,21 @@ func _spawn_points():
 				if v in powerup_pos:
 					_activate_powerup()
 				if points.is_empty():
+					SoundManager.cleared()
 					get_tree().paused = true
 					await get_tree().create_timer(1.0).timeout
 					_spawn_points()
+					_respawn_characters()
 					get_tree().paused = false
 			)
 			points[v] = point.position
 			tilemap.add_child(point)
 
 func _spawn_pacman():
+	if pacman:
+		pacman.queue_free()
+		pacman_pos = null
+	
 	pacman = pacman_scene.instantiate()
 	pacman.tilemap = tilemap
 	pacman.position = pacman_spawn.position if pacman_pos == null else pacman_pos
