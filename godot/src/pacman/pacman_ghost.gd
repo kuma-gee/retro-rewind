@@ -13,12 +13,10 @@ extends CharacterBody2D
 @onready var pupil_left := $EyeLeft/Pupil
 @onready var pupil_right := $EyeRight/Pupil
 
-@onready var respawn_timer := $RespawnTimer
 @onready var collision := $CollisionShape2D
 @onready var sprite := $Sprite2D
 @onready var orig_modulate = sprite.modulate
 
-#var current_modulate = null
 var moving
 var local_paths = []
 var return_dir = Vector2i.ZERO
@@ -28,34 +26,17 @@ var speed = 0.25
 var catchable = false : set = _set_catchable
 
 var return_spawn = false
-var respawn_time_left := 0.0
 
 var move_tw: Tween
 var blink_tw: Tween
 
 func _ready():
 	collision.disabled = true
-#	if current_modulate == null:
-#		current_modulate = orig_modulate
-#
-#	sprite.modulate = current_modulate
-	
-	if respawn_time_left > 0:
-		respawn_timer.start(respawn_time_left)
 
 func _set_catchable(c):
 	catchable = c
+	fleeing = c
 	_stop_blink()
-	
-	if catchable:
-		fleeing = true
-#		current_modulate = Color.from_string("1b39bf", Color.BLUE)
-#		if return_spawn:
-#			current_modulate = Color.TRANSPARENT
-	else:
-		catchable = false
-		fleeing = false
-#		current_modulate = orig_modulate
 
 func _get_sprite_modulate():
 	if catchable:
@@ -67,14 +48,13 @@ func _get_sprite_modulate():
 func reset_position():
 	if move_tw:
 		move_tw.kill()
+	_stop_blink()
 	
 	move = false
 	global_position = spawn_pos.global_position
 	self.catchable = false
-	respawn_timer.stop()
 	return_dir = Vector2i.ZERO
 	moving = null
-	_stop_blink()
 
 func blink():
 	if catchable and not return_spawn:
@@ -99,7 +79,6 @@ func change_normal():
 
 func caught():
 	return_spawn = true
-#	current_modulate = Color.TRANSPARENT
 
 func _stop_blink():
 	if blink_tw:
@@ -128,15 +107,12 @@ func _get_target():
 	return [target, pac]
 	
 func _process(_delta):
-	speed = 0.1 if return_spawn and respawn_timer.is_stopped() else 0.25
+	speed = 0.20 if return_spawn else 0.25
 	sprite.modulate = _get_sprite_modulate()
 	collision.disabled = not catchable
-	respawn_time_left = respawn_timer.time_left
 	if not catchable:
 		modulate = Color.WHITE
-		
-	if respawn_time_left > 0 and respawn_time_left < 2.0 and (blink_tw == null or not blink_tw.is_running()):
-		_do_blink()
+
 	
 	if not move:
 		return
@@ -153,8 +129,8 @@ func _process(_delta):
 		var pac = result[1]
 		
 		var dist = global_position.distance_to(target)
-		if dist < 2 and return_spawn and respawn_timer.is_stopped():
-			respawn_timer.start()
+		if dist < 2 and return_spawn:
+			_respawn()
 		
 		var path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, global_position, target, false)
 		if path.size() > 1:
@@ -251,6 +227,6 @@ func _on_area_2d_body_entered(body):
 		body.killed()
 
 
-func _on_respawn_timer_timeout():
+func _respawn():
 	return_spawn = false
 	change_normal()

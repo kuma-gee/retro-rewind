@@ -100,11 +100,6 @@ color = Color(0, 0, 0, 1)
 
 [node name="Cache" type="Node" parent="."]
 script = ExtResource("4_8xpeq")
-properties = Array[String](["move", "position", "freeing", "return_dir", "return_spawn", "catchable", "respawn_time_left"])
-
-[node name="RespawnTimer" type="Timer" parent="."]
-wait_time = 6.0
-one_shot = true
+properties = Array[String](["move", "position", "freeing", "return_dir", "return_spawn", "catchable"])
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

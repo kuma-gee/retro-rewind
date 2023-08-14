@@ -117,6 +117,7 @@ func _process(_delta):
 		
 
 func _activate_powerup():
+	print("power up start")
 	powerup_timer.start()
 	blinky.change_running()
 	pinky.change_running()
@@ -125,6 +126,7 @@ func _activate_powerup():
 	blink_called = false
 
 func _on_powerup_timer_timeout():
+	print("power up finished")
 	blinky.change_normal()
 	pinky.change_normal()
 	inky.change_normal()
@@ -195,6 +197,7 @@ func _respawn_characters():
 	inky.reset_position()
 	clyde.reset_position()
 	release_timer.stop()
+	powerup_timer.stop()
 	
 	await get_tree().create_timer(2.0).timeout
 	blinky.move = true
