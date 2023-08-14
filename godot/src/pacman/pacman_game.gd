@@ -171,11 +171,12 @@ func _spawn_pacman():
 		get_tree().current_scene.add_child(score_label)
 	)
 	pacman.died.connect(func():
-		pacman = null
-		death_sound.play()
-		GameManager.lose_health()
-		await get_tree().create_timer(1.0).timeout
-		_respawn_characters()
+		if pacman:
+			pacman = null
+			death_sound.play()
+			GameManager.lose_health()
+			await get_tree().create_timer(1.0).timeout
+			_respawn_characters()
 	)
 	tilemap.add_child(pacman)
 

@@ -51,6 +51,7 @@ func _physics_process(delta):
 
 
 func killed():
+	collision.set_deferred("disabled", true)
 	died.emit()
 	input.disable()
 	var tw = create_tween()
