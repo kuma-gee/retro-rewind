@@ -12,9 +12,14 @@ enum Game {
 @export var hp_container: Control
 @export var game_ui: Control
 @export var gameover_container: Control
+
 @export var ranking_container: Control
+@export var ranking_focus: Control
 @export var ranking: Ranking
+
 @export var end_score: Label
+@export var credits: Control
+@export var credits_focus: Control
 
 @onready var frame_freeze := $FrameFreeze
 @onready var glitch_timer := $GlitchTimer
@@ -31,15 +36,12 @@ var current_game := Game.BREAKOUT
 var player_name := ""
 var player_position = -1
 
-var waiting_continue := false
 var gameover := false
 var glitch_tween
 var glitch_count = 0
 
 func _ready():
-	game_ui.hide()
-	gameover_container.hide()
-	ranking_container.hide()
+	_show_only(credits)
 	
 	if Build.SILENT_WOLF_API:
 		SilentWolf.configure({
@@ -54,39 +56,44 @@ func _set_health(hp):
 		var node = hp_container.get_child(i)
 		node.visible = i < health
 
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_accept"):
-		_back_to_start()
+#func _unhandled_input(event):
 
 func freeze():
 	frame_freeze.freeze(0.01, 1.5)
 
 func _back_to_start():
-	if not waiting_continue: return
-	
 	var tw = create_tween()
 	tw.tween_property(bgm, "volume_db", -10, 1.0)
 	gameover = false
-	game_ui.hide()
-	gameover_container.hide()
-	ranking_container.hide()
+	_show_only()
 	get_tree().change_scene_to_file("res://src/game.tscn")
 	get_tree().paused = false
-	waiting_continue = false
 	CacheManager.clear()
 
-func start_game(game = current_game):
+func _show_only(node = null):
+	game_ui.visible = node == game_ui
+	gameover_container.visible = node == gameover_container
+	
+	ranking_container.visible = node == ranking_container
+	if ranking_container.visible:
+		ranking_focus.grab_focus()
+	
+	credits.visible = node == credits
+	if credits.visible:
+		credits_focus.grab_focus()
+
+func start_game():
 	var tw = create_tween()
 	tw.tween_property(bgm, "volume_db", -20, 1.0)
 
-	game_ui.visible = game != null
+	_show_only(game_ui)
 	breakout_score = 0
 	pacman_score = 0
 	glitch_count = 0
 	self.health = hp_container.get_child_count()
 	
 	_update_score()
-	_change_game(game, false)
+	_change_game(current_game, false)
 	
 
 func _change_game(game, save = true):
@@ -107,18 +114,17 @@ func lose_health(do_freeze = true):
 		get_tree().paused = true
 		gameover = true
 		end_score.text = "Score: " + str(_get_total_score())
-		gameover_container.show()
+		_show_only(gameover_container)
 		lose_sound.play()
 		_reset_glitch()
 		if glitch_tween:
 			glitch_tween.kill()
 
 func _on_keyboard_submitted(text):
-	gameover_container.hide()
-	player_name = text
+	_show_only(ranking_container)
 	
+	player_name = text
 	ranking.loading_data()
-	ranking_container.show()
 	
 	var total_score = _get_total_score()
 	var sw_result: Dictionary = await SilentWolf.Scores.save_score(player_name, total_score).sw_save_score_complete
@@ -133,8 +139,6 @@ func _on_keyboard_submitted(text):
 	
 	player_position = scores_around.position
 	ranking.show_scores(scores, scores_around.position)
-	waiting_continue = true
-	get_tree().create_timer(10.0).timeout.connect(_back_to_start)
 
 func _get_total_score():
 	return breakout_score + pacman_score
@@ -205,3 +209,12 @@ func _on_glitch_timer_timeout():
 			get_tree().current_scene.random_glitch()
 			glitch_count += 1
 	)
+
+
+func _on_continue_pressed():
+	_back_to_start()
+
+
+func _on_ranking_continue_pressed():
+	_show_only(credits)
+	get_tree().create_timer(15.0).timeout.connect(_back_to_start)
