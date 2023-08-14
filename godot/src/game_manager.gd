@@ -32,7 +32,7 @@ var health := 0 : set = _set_health
 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.PACMAN
+var current_game := Game.BREAKOUT
 
 var player_name := ""
 var player_position = -1
@@ -48,7 +48,7 @@ func _ready():
 		SilentWolf.configure({
 			"api_key": Build.SILENT_WOLF_API,
 			"game_id": Build.SILENT_WOLF_GAME,
-			"log_level": 1
+			"log_level": 0
 		})
 
 func _set_health(hp):

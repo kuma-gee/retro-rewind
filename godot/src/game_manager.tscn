@@ -49,7 +49,6 @@ shader_parameter/glitch_time = 5.0
 [node name="GameManager" type="Node" node_paths=PackedStringArray("score_label", "screen", "hp_container", "game_ui", "gameover_container", "ranking_container", "ranking_focus", "ranking", "end_score", "credits", "credits_focus")]
 process_mode = 3
 script = ExtResource("1_c0r20")
-game_switch_chance = 0.0
 score_label = NodePath("CanvasLayer/MarginContainer/HBoxContainer/Score")
 screen = NodePath("CanvasLayer/Screen")
 hp_container = NodePath("CanvasLayer/MarginContainer/HBoxContainer/HpContainer")
