@@ -59,6 +59,7 @@ func reset_position():
 	move = false
 	self.catchable = false
 	respawn_timer.stop()
+	_stop_blink()
 
 func blink():
 	if catchable and not return_spawn:

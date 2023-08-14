@@ -1,3 +1,4 @@
+class_name DeviceSwitcher
 extends Node
 
 @export var input_path: NodePath

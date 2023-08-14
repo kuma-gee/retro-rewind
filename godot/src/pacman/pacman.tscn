@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://cn7igr3887vg7"]
+[gd_scene load_steps=11 format=3 uid="uid://cn7igr3887vg7"]
 
 [ext_resource type="Texture2D" uid="uid://c8twmkhb57ytp" path="res://assets/Pacman.png" id="1_on5ru"]
 [ext_resource type="Script" path="res://src/pacman/pacman.gd" id="1_pp57p"]
 [ext_resource type="Script" path="res://addons/input-system/PlayerInput.gd" id="3_kya4o"]
+[ext_resource type="Script" path="res://addons/input-system/DeviceSwitcher.gd" id="3_uuo0c"]
 [ext_resource type="AudioStream" uid="uid://cmf7y4odphuk0" path="res://assets/ghostDeath.wav" id="4_iyvi2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1r3rd"]
@@ -59,6 +60,9 @@ shape = SubResource("CircleShape2D_1r3rd")
 
 [node name="Input" type="Node" parent="."]
 script = ExtResource("3_kya4o")
+
+[node name="DeviceSwitcher" type="Node" parent="Input"]
+script = ExtResource("3_uuo0c")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0
