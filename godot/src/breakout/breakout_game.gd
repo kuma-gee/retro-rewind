@@ -3,6 +3,7 @@ extends Node2D
 @onready var camera := $Camera2D
 @onready var player := $BreakoutPlayer
 @onready var block_spawner := $BreakoutBlockSpawner
+@onready var shake := $Camera2D/Shake
 
 var glitches = [
 	_camera_rotation_glitch,

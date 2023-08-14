@@ -19,13 +19,14 @@ enum Game {
 @onready var frame_freeze := $FrameFreeze
 @onready var glitch_timer := $GlitchTimer
 @onready var glitch_sound := $GlitchSound
+@onready var lose_sound := $LoseSound
 
 
 var health := 0 : set = _set_health 
 
 var breakout_score := 0
 var pacman_score := 0
-var current_game := Game.PACMAN
+var current_game := Game.BREAKOUT
 
 var player_name := ""
 var player_position = -1
@@ -92,14 +93,17 @@ func _change_game(game, save = true):
 	current_game = game
 	glitch_timer.start()
 
-func lose_health():
+func lose_health(do_freeze = true):
 	self.health -= 1
 	
+	if do_freeze:
+		freeze()
 	if health < 0:
 		get_tree().paused = true
 		gameover = true
 		end_score.text = "Score: " + str(_get_total_score())
 		gameover_container.show()
+		lose_sound.play()
 		_reset_glitch()
 		if glitch_tween:
 			glitch_tween.kill()
@@ -160,7 +164,7 @@ func glitch(callback: Callable, start_timer = false):
 		var wait_time = callback.call()
 		_reset_glitch()
 		get_tree().paused = true
-		await get_tree().create_timer(wait_time if wait_time else 0.5).timeout
+		await get_tree().create_timer(wait_time if wait_time else 1.0).timeout
 		get_tree().paused = false
 		if start_timer:
 			glitch_timer.start()

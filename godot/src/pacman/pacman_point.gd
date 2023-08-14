@@ -41,9 +41,12 @@ func _process(delta):
 
 func _move(dir):
 	var result = tilemap.do_move(self, dir, func(): moving = null, speed, false, true)
-	moving = result[0]
-	tw = result[1]
-	return_dir = -dir
+	if result:
+		moving = result[0]
+		tw = result[1]
+		return_dir = -dir
+	else:
+		moving = null
 
 func _possible_dirs():
 	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))

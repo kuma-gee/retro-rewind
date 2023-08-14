@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxqsgshr7uohb"]
+[gd_scene load_steps=7 format=3 uid="uid://cxqsgshr7uohb"]
 
 [ext_resource type="Script" path="res://src/breakout/breakout_ball.gd" id="1_jedt4"]
 [ext_resource type="Shader" path="res://src/circle.gdshader" id="2_lbwjx"]
 [ext_resource type="AudioStream" uid="uid://bj4kmufpro6w7" path="res://assets/hitHurt(1).wav" id="3_4mrkq"]
+[ext_resource type="Script" path="res://shared/CameraShake.gd" id="4_2pywd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dvtc1"]
 shader = ExtResource("2_lbwjx")
@@ -35,6 +36,11 @@ scale = Vector2(0.4, 0.4)
 stream = ExtResource("3_4mrkq")
 volume_db = -10.0
 pitch_scale = 1.5
+
+[node name="Shake" type="Node" parent="."]
+script = ExtResource("4_2pywd")
+noise_shake_strength = 5.0
+shake_decay_rate = 50.0
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
 [connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

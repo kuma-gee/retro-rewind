@@ -17,6 +17,7 @@ extends Node2D
 @onready var release_timer: Timer = $ReleaseGhostTimer
 @onready var powerup_timer: Timer = $PowerupTimer
 @onready var death_sound := $DeathSound
+@onready var shake := $Camera2D/Shake
 
 var pacman
 var pacman_pos
@@ -173,6 +174,7 @@ func _spawn_pacman():
 	pacman.died.connect(func():
 		if pacman:
 			pacman = null
+			shake.shake()
 			death_sound.play()
 			GameManager.lose_health()
 			await get_tree().create_timer(1.0).timeout

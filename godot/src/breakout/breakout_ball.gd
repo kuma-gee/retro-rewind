@@ -7,12 +7,14 @@ signal out_of_bound
 @export var speed := 300
 @export var spin_angle := PI/8
 
+@onready var shake := $Shake
 @onready var audio := $AudioStreamPlayer
 @onready var current_speed = speed
 
 var play_sound = false
 var motion := Vector2.ZERO
 var remove = false
+var combo := 1.0
 
 func start_move():
 	var angle = randf_range(-PI/4, PI/4)
@@ -39,11 +41,15 @@ func _physics_process(_delta):
 		var collider = collision.get_collider()
 		if collider is BreakoutBlock:
 			collider.remove_block()
-			GameManager.add_breakout_score(collider.value)
+			GameManager.add_breakout_score(collider.value * combo)
+			combo += 0.1
 		
 		if collider is BreakoutPlayer:
 			var spin_dir = sign(collider.motion)
 			motion = motion.rotated(spin_angle * spin_dir)
+		
+		if play_sound:
+			shake.shake()
 
 
 func _on_visible_on_screen_notifier_2d_screen_exited():

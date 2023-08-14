@@ -17,6 +17,7 @@ var spawned_ball
 var ball_position
 var ball_motion
 var ball_sound = false
+var ball_combo = 1.0
 
 var active_ball
 var motion = 0
@@ -28,7 +29,7 @@ func _spawn_ball():
 	active_ball = ball_scene.instantiate() as BreakoutBall
 	active_ball.out_of_bound.connect(func():
 		spawned_ball = null
-		GameManager.lose_health()
+		GameManager.lose_health(false)
 		timer.start()
 	)
 	active_ball.global_position = ball_remote.global_position
@@ -39,6 +40,7 @@ func _spawn_ball():
 	else:
 		active_ball.global_position = ball_position
 		active_ball.motion = ball_motion
+		active_ball.combo = ball_combo
 		spawned_ball = active_ball
 		active_ball = null
 
@@ -47,10 +49,12 @@ func _process(delta):
 		ball_position = spawned_ball.global_position
 		ball_motion = spawned_ball.motion
 		ball_sound = spawned_ball.play_sound
+		ball_combo = spawned_ball.combo
 	else:
 		ball_position = null
 		ball_motion = null
 		ball_sound = false
+		ball_combo = 1
 
 func _physics_process(delta):
 	motion = input.get_action_strength("move_right") - input.get_action_strength("move_left")
