@@ -108,6 +108,7 @@ func _get_target():
 	return [target, pac]
 	
 func _process(_delta):
+	speed = 0.1 if return_spawn and respawn_timer.is_stopped() else 0.25
 	sprite.modulate = current_modulate
 	collision.disabled = not catchable
 	respawn_time_left = respawn_timer.time_left
