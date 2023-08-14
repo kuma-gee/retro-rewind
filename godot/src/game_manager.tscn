@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dx3hb45c51oan" path="res://assets/Point.png" id="3_dwsqs"]
 [ext_resource type="Material" uid="uid://dws48v6xay15r" path="res://src/breakout/health.tres" id="3_se5hi"]
 [ext_resource type="LabelSettings" uid="uid://c584vf1vlxhtw" path="res://src/title.tres" id="5_oa80m"]
-[ext_resource type="Script" path="res://src/Keyboard.gd" id="6_xvtbm"]
+[ext_resource type="PackedScene" uid="uid://clerurdgmekcf" path="res://src/keyboard.tscn" id="6_ch7n0"]
 [ext_resource type="PackedScene" uid="uid://cyl56bx4nrgug" path="res://src/ranking.tscn" id="7_ibfye"]
 [ext_resource type="StyleBox" uid="uid://dne36hmwuxn55" path="res://theme/link.tres" id="8_vrefp"]
 [ext_resource type="Texture2D" uid="uid://dpuyohamkgyfu" path="res://assets/title.png" id="9_dn8di"]
@@ -168,22 +168,11 @@ layout_mode = 2
 text = "Score"
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
+[node name="Keyboard" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer" instance=ExtResource("6_ch7n0")]
 layout_mode = 2
-horizontal_alignment = 1
-
-[node name="Keyboard" type="GridContainer" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer" node_paths=PackedStringArray("label", "submit_btn")]
-layout_mode = 2
-columns = 10
-script = ExtResource("6_xvtbm")
-label = NodePath("../Label2")
-submit_btn = NodePath("../Button")
-
-[node name="Button" type="Button" parent="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Submit"
 
 [node name="Ranking" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -227,6 +216,7 @@ layout_mode = 2
 text = "Continue"
 
 [node name="Credits" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -341,7 +331,12 @@ stream = ExtResource("13_wespd")
 volume_db = -10.0
 autoplay = true
 
+[node name="BackTimer" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
+
 [connection signal="submitted" from="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/Keyboard" to="." method="_on_keyboard_submitted"]
 [connection signal="pressed" from="CanvasLayer/Ranking/Ranking/RankingContinue" to="." method="_on_ranking_continue_pressed"]
 [connection signal="pressed" from="CanvasLayer/Credits/Credits/VBoxContainer2/Continue" to="." method="_on_continue_pressed"]
 [connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]
+[connection signal="timeout" from="BackTimer" to="." method="_on_back_timer_timeout"]

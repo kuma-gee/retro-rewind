@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://clerurdgmekcf"]
+
+[ext_resource type="Script" path="res://src/Keyboard.gd" id="1_ieoag"]
+
+[node name="Keyboard" type="VBoxContainer" node_paths=PackedStringArray("label", "grid", "submit_btn", "confirm_no_submit")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ieoag")
+label = NodePath("Label2")
+grid = NodePath("Keyboard")
+submit_btn = NodePath("Submit")
+confirm_no_submit = NodePath("HBoxContainer")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="Keyboard" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 10
+
+[node name="Submit" type="Button" parent="."]
+layout_mode = 2
+text = "Submit"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Cancel" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="NoSubmit" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Skip Submit?"
+
+[connection signal="pressed" from="Submit" to="." method="_on_submit_pressed"]
+[connection signal="pressed" from="HBoxContainer/Cancel" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="HBoxContainer/NoSubmit" to="." method="_on_no_submit_pressed"]

@@ -21,6 +21,7 @@ enum Game {
 @export var credits: Control
 @export var credits_focus: Control
 
+@onready var back_timer := $BackTimer
 @onready var frame_freeze := $FrameFreeze
 @onready var glitch_timer := $GlitchTimer
 @onready var glitch_sound := $GlitchSound
@@ -41,7 +42,7 @@ var glitch_tween
 var glitch_count = 0
 
 func _ready():
-	_show_only(credits)
+	_show_only()
 	
 	if Build.SILENT_WOLF_API:
 		SilentWolf.configure({
@@ -62,6 +63,8 @@ func freeze():
 	frame_freeze.freeze(0.01, 1.5)
 
 func _back_to_start():
+	back_timer.stop()
+	
 	var tw = create_tween()
 	tw.tween_property(bgm, "volume_db", -10, 1.0)
 	gameover = false
@@ -121,6 +124,10 @@ func lose_health(do_freeze = true):
 			glitch_tween.kill()
 
 func _on_keyboard_submitted(text):
+	if text == "":
+		_on_ranking_continue_pressed()
+		return
+	
 	_show_only(ranking_container)
 	
 	player_name = text
@@ -217,4 +224,8 @@ func _on_continue_pressed():
 
 func _on_ranking_continue_pressed():
 	_show_only(credits)
-	get_tree().create_timer(15.0).timeout.connect(_back_to_start)
+	back_timer.start()
+
+
+func _on_back_timer_timeout():
+	_back_to_start()
