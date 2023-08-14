@@ -44,7 +44,7 @@ update_scale = false
 
 [node name="Cache" type="Node" parent="."]
 script = ExtResource("4_1c1c2")
-properties = Array[String](["global_position", "ball_position", "ball_motion", "ball_sound", "ball_combo"])
+properties = Array[String](["global_position", "ball_position", "ball_motion", "ball_sound", "ball_combo", "ball_speed"])
 
 [node name="BallSpawnTimer" type="Timer" parent="."]
 one_shot = true

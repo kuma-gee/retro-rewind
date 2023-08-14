@@ -20,6 +20,7 @@ var ball_position
 var ball_motion
 var ball_sound = false
 var ball_combo = 1.0
+var ball_speed
 
 var active_ball
 var motion = 0
@@ -54,6 +55,7 @@ func _spawn_ball():
 		active_ball.motion = ball_motion
 		active_ball.combo = ball_combo
 		active_ball.play_sound = ball_sound
+		active_ball.current_speed = ball_speed if ball_speed else active_ball.speed
 		spawned_ball = active_ball
 		active_ball = null
 
@@ -63,11 +65,13 @@ func _process(delta):
 		ball_motion = spawned_ball.motion
 		ball_sound = spawned_ball.play_sound
 		ball_combo = spawned_ball.combo
+		ball_speed = spawned_ball.current_speed
 	else:
 		ball_position = null
 		ball_motion = null
 		ball_sound = false
 		ball_combo = 1
+		ball_speed = null
 
 func _physics_process(delta):
 	motion = input.get_action_strength("move_right") - input.get_action_strength("move_left")
