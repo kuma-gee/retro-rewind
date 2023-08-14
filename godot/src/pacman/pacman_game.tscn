@@ -540,34 +540,49 @@ script = ExtResource("4_wyvvg")
 position = Vector2(76.8334, 132.5)
 scale = Vector2(0.416667, 0.416667)
 
-[node name="GhostSpawn" type="Marker2D" parent="TileMap"]
+[node name="Pink" type="Marker2D" parent="TileMap"]
 position = Vector2(76.8334, 84.1667)
 scale = Vector2(0.416667, 0.416667)
 
-[node name="Blinky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "tilemap") instance=ExtResource("6_bjopi")]
+[node name="Blue" type="Marker2D" parent="TileMap"]
+position = Vector2(67.5, 84.1667)
+scale = Vector2(0.416667, 0.416667)
+
+[node name="Orange" type="Marker2D" parent="TileMap"]
+position = Vector2(85.8333, 84.1667)
+scale = Vector2(0.416667, 0.416667)
+
+[node name="Red" type="Marker2D" parent="TileMap"]
+position = Vector2(76.6667, 68.3333)
+scale = Vector2(0.416667, 0.416667)
+
+[node name="Blinky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "ghost_room", "tilemap") instance=ExtResource("6_bjopi")]
 z_index = 1
 position = Vector2(76.8333, 68.3333)
-spawn_pos = NodePath("../GhostSpawn")
+spawn_pos = NodePath("../Red")
+ghost_room = NodePath("../Pink")
 tilemap = NodePath("..")
 look_range = 300
 
 [node name="Sprite2D" parent="TileMap/Blinky" index="2"]
 modulate = Color(1, 0.180392, 0.180392, 1)
 
-[node name="Pinky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "tilemap") instance=ExtResource("6_bjopi")]
+[node name="Pinky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "ghost_room", "tilemap") instance=ExtResource("6_bjopi")]
 z_index = 1
 position = Vector2(76.8333, 84.1667)
-spawn_pos = NodePath("../GhostSpawn")
+spawn_pos = NodePath("../Pink")
+ghost_room = NodePath("../Pink")
 tilemap = NodePath("..")
 look_ahead = 2
 
 [node name="Sprite2D" parent="TileMap/Pinky" index="2"]
 modulate = Color(0.941176, 0.490196, 0.92549, 1)
 
-[node name="Inky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "tilemap") instance=ExtResource("6_bjopi")]
+[node name="Inky" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "ghost_room", "tilemap") instance=ExtResource("6_bjopi")]
 z_index = 1
 position = Vector2(67.6667, 84.1667)
-spawn_pos = NodePath("../GhostSpawn")
+spawn_pos = NodePath("../Blue")
+ghost_room = NodePath("../Pink")
 tilemap = NodePath("..")
 look_ahead = 10
 look_range = 80
@@ -575,10 +590,11 @@ look_range = 80
 [node name="Sprite2D" parent="TileMap/Inky" index="2"]
 modulate = Color(0, 0.85098, 1, 1)
 
-[node name="Clyde" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "tilemap") instance=ExtResource("7_u03jm")]
+[node name="Clyde" parent="TileMap" node_paths=PackedStringArray("spawn_pos", "ghost_room", "tilemap") instance=ExtResource("7_u03jm")]
 z_index = 1
 position = Vector2(86, 84.1667)
-spawn_pos = NodePath("../GhostSpawn")
+spawn_pos = NodePath("../Orange")
+ghost_room = NodePath("../Pink")
 tilemap = NodePath("..")
 look_ahead = 1
 look_range = 150

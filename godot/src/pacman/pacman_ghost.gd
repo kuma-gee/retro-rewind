@@ -2,6 +2,8 @@ class_name PacmanGhost
 extends CharacterBody2D
 
 @export var spawn_pos: Node2D
+@export var ghost_room: Node2D
+
 @export var move = false : set = _set_move
 @export var tilemap: PacmanMap
 @export var fleeing = false
@@ -15,9 +17,8 @@ extends CharacterBody2D
 @onready var collision := $CollisionShape2D
 @onready var sprite := $Sprite2D
 @onready var orig_modulate = sprite.modulate
-@onready var orig_pos = global_position
 
-var current_modulate = null
+#var current_modulate = null
 var moving
 var local_paths = []
 var return_dir = Vector2i.ZERO
@@ -29,14 +30,15 @@ var catchable = false : set = _set_catchable
 var return_spawn = false
 var respawn_time_left := 0.0
 
+var move_tw: Tween
 var blink_tw: Tween
 
 func _ready():
 	collision.disabled = true
-	if current_modulate == null:
-		current_modulate = orig_modulate
-	
-	sprite.modulate = current_modulate
+#	if current_modulate == null:
+#		current_modulate = orig_modulate
+#
+#	sprite.modulate = current_modulate
 	
 	if respawn_time_left > 0:
 		respawn_timer.start(respawn_time_left)
@@ -47,18 +49,31 @@ func _set_catchable(c):
 	
 	if catchable:
 		fleeing = true
-		current_modulate = Color.from_string("1b39bf", Color.BLUE)
-		if return_spawn:
-			current_modulate = Color.TRANSPARENT
+#		current_modulate = Color.from_string("1b39bf", Color.BLUE)
+#		if return_spawn:
+#			current_modulate = Color.TRANSPARENT
 	else:
 		catchable = false
 		fleeing = false
-		current_modulate = orig_modulate
+#		current_modulate = orig_modulate
+
+func _get_sprite_modulate():
+	if catchable:
+		if return_spawn:
+			return Color.TRANSPARENT
+		return Color.from_string("1b39bf", Color.BLUE)
+	return orig_modulate
 
 func reset_position():
+	if move_tw:
+		move_tw.kill()
+	
 	move = false
+	global_position = spawn_pos.global_position
 	self.catchable = false
 	respawn_timer.stop()
+	return_dir = Vector2i.ZERO
+	moving = null
 	_stop_blink()
 
 func blink():
@@ -84,7 +99,7 @@ func change_normal():
 
 func caught():
 	return_spawn = true
-	current_modulate = Color.TRANSPARENT
+#	current_modulate = Color.TRANSPARENT
 
 func _stop_blink():
 	if blink_tw:
@@ -94,7 +109,7 @@ func _stop_blink():
 
 func _get_target():
 	if return_spawn:
-		return [spawn_pos.global_position, null]
+		return [ghost_room.global_position, null]
 	
 	var player = get_tree().get_first_node_in_group("player")
 	if player == null or player.collision.disabled:
@@ -114,7 +129,7 @@ func _get_target():
 	
 func _process(_delta):
 	speed = 0.1 if return_spawn and respawn_timer.is_stopped() else 0.25
-	sprite.modulate = current_modulate
+	sprite.modulate = _get_sprite_modulate()
 	collision.disabled = not catchable
 	respawn_time_left = respawn_timer.time_left
 	if not catchable:
@@ -124,7 +139,6 @@ func _process(_delta):
 		_do_blink()
 	
 	if not move:
-		global_position = orig_pos
 		return
 	
 	if moving != null:
@@ -218,8 +232,10 @@ func _possible_dirs():
 	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
 
 func _move(dir):
-	moving = tilemap.do_move(self, dir, func(): moving = null, speed, true)
+	var result = tilemap.do_move(self, dir, func(): moving = null, speed, true, true)
+	moving = result[0]
 	return_dir = -dir
+	move_tw = result[1]
 
 #func _draw():
 #	if local_paths.size() > 0:

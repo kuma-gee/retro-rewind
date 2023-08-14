@@ -58,6 +58,9 @@ func do_move(node: Node2D, motion: Vector2i, finish_fn: Callable, speed = 0.2, a
 		if not _is_wall(dest) and (dest != ghost_door or allow_ghost_door):
 			return _move(node, dest, finish_fn, speed, return_tw)
 
+	if return_tw:
+		return [null, null]
+
 func _is_wall(p: Vector2i):
 	var cell = get_cell_source_id(0, p)
 	return cell != -1
