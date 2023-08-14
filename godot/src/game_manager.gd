@@ -5,7 +5,7 @@ enum Game {
 	PACMAN,
 }
 
-@export var game_switch_chance := 0.05
+@export var game_switch_chance := 0.1
 
 @export var score_label: Label
 @export var screen: Control
@@ -20,7 +20,7 @@ enum Game {
 @onready var glitch_timer := $GlitchTimer
 @onready var glitch_sound := $GlitchSound
 @onready var lose_sound := $LoseSound
-
+@onready var bgm := $BGM
 
 var health := 0 : set = _set_health 
 
@@ -64,6 +64,8 @@ func freeze():
 func _back_to_start():
 	if not waiting_continue: return
 	
+	var tw = create_tween()
+	tw.tween_property(bgm, "volume_db", -10, 1.0)
 	gameover = false
 	game_ui.hide()
 	gameover_container.hide()
@@ -74,6 +76,9 @@ func _back_to_start():
 	CacheManager.clear()
 
 func start_game(game = current_game):
+	var tw = create_tween()
+	tw.tween_property(bgm, "volume_db", -20, 1.0)
+
 	game_ui.visible = game != null
 	breakout_score = 0
 	pacman_score = 0

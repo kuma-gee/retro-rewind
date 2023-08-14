@@ -53,6 +53,7 @@ func _spawn_ball():
 		active_ball.global_position = ball_position
 		active_ball.motion = ball_motion
 		active_ball.combo = ball_combo
+		active_ball.play_sound = ball_sound
 		spawned_ball = active_ball
 		active_ball = null
 

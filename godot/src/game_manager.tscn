@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://crny5uvk3tm4h"]
+[gd_scene load_steps=15 format=3 uid="uid://crny5uvk3tm4h"]
 
 [ext_resource type="Script" path="res://src/game_manager.gd" id="1_c0r20"]
 [ext_resource type="Theme" uid="uid://cvvavdkxk7llv" path="res://theme/theme.tres" id="1_mhbye"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://shared/FrameFreeze.gd" id="10_hui16"]
 [ext_resource type="AudioStream" uid="uid://c6bedlh74blk" path="res://assets/glitch.wav" id="11_enw1v"]
 [ext_resource type="AudioStream" uid="uid://h4wsan6ysuef" path="res://assets/lose.wav" id="12_t5siw"]
+[ext_resource type="AudioStream" uid="uid://deal1xmgqs8tj" path="res://assets/On the road.mp3" id="13_wespd"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vyp5a"]
 shader = ExtResource("2_defhv")
@@ -249,6 +250,11 @@ pitch_scale = 1.5
 [node name="LoseSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_t5siw")
 volume_db = -10.0
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_wespd")
+volume_db = -10.0
+autoplay = true
 
 [connection signal="submitted" from="CanvasLayer/Gameover/GameOver/MarginContainer/VBoxContainer/Keyboard" to="." method="_on_keyboard_submitted"]
 [connection signal="timeout" from="GlitchTimer" to="." method="_on_glitch_timer_timeout"]
