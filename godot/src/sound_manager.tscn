@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://cb3s827gl7ugu"]
+
+[ext_resource type="Script" path="res://src/sound_manager.gd" id="1_i2s06"]
+[ext_resource type="AudioStream" uid="uid://dbs1id8q7j2dj" path="res://assets/powerUp.wav" id="1_kas6w"]
+[ext_resource type="AudioStream" uid="uid://kfkll1sw56d5" path="res://assets/pickup.wav" id="2_o4bg1"]
+[ext_resource type="Script" path="res://src/DebounceAudio.gd" id="3_nl384"]
+
+[node name="SoundManager" type="Node"]
+script = ExtResource("1_i2s06")
+
+[node name="PacmanPoint" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_o4bg1")
+volume_db = -15.0
+script = ExtResource("3_nl384")
+
+[node name="PacmanPowerUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_kas6w")
+volume_db = -10.0
+script = ExtResource("3_nl384")

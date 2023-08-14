@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cxqsgshr7uohb"]
+[gd_scene load_steps=6 format=3 uid="uid://cxqsgshr7uohb"]
 
 [ext_resource type="Script" path="res://src/breakout/breakout_ball.gd" id="1_jedt4"]
 [ext_resource type="Shader" path="res://src/circle.gdshader" id="2_lbwjx"]
+[ext_resource type="AudioStream" uid="uid://bj4kmufpro6w7" path="res://assets/hitHurt(1).wav" id="3_4mrkq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dvtc1"]
 shader = ExtResource("2_lbwjx")
@@ -30,4 +31,10 @@ shape = SubResource("CircleShape2D_s3vg0")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 scale = Vector2(0.4, 0.4)
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_4mrkq")
+volume_db = -10.0
+pitch_scale = 1.5
+
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_audio_stream_player_finished"]

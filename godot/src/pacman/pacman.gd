@@ -50,6 +50,10 @@ func _physics_process(delta):
 
 func killed():
 	died.emit()
+	input.disable()
+	var tw = create_tween()
+	tw.tween_property(self, "rotation", TAU, 0.5)
+	await tw.finished
 	queue_free()
 
 func _on_invincibility_timer_timeout():

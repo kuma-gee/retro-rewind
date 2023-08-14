@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://deal1xmgqs8tj"
+path="res://.godot/imported/On the road.mp3-003bce3fb405dbd6998c44bb6fb67c4e.mp3str"
+
+[deps]
+
+source_file="res://assets/On the road.mp3"
+dest_files=["res://.godot/imported/On the road.mp3-003bce3fb405dbd6998c44bb6fb67c4e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -12,7 +12,9 @@ extends Node2D
 
 @onready var camera := $Camera2D
 @onready var tilemap: TileMap = $TileMap
+@onready var release_timer: Timer = $ReleaseGhostTimer
 @onready var powerup_timer: Timer = $PowerupTimer
+@onready var death_sound := $DeathSound
 
 var pacman
 var pacman_pos
@@ -42,6 +44,9 @@ func _ready():
 	
 	if powerup_timeleft > 0:
 		powerup_timer.start(powerup_timeleft)
+	
+	if not blinky.move:
+		get_tree().create_timer(1.0).timeout.connect(func(): blinky.move = true)
 
 func random_glitch():
 	var glitch = glitches.pick_random()
@@ -54,12 +59,14 @@ func random_glitch():
 func _rotate_camera():
 	flipped = true
 	camera.rotation_degrees = 180
-	pacman.flip_input = flipped
+	if pacman:
+		pacman.flip_input = flipped
 	get_tree().create_timer(8.0).timeout.connect(func(): 
 		GameManager.glitch(func():
 			camera.rotation_degrees = 0
 			flipped = false
-			pacman.flip_input = flipped
+			if pacman:
+				pacman.flip_input = flipped
 		, true)
 	)
 
@@ -90,7 +97,8 @@ func _restore_points():
 			continue
 		
 		child.restore()
-		child.position = points[child.pos]
+		if points.has(child.pos):
+			child.position = points[child.pos]
 
 func _process(_delta):
 	powerup_timeleft = powerup_timer.time_left
@@ -150,11 +158,24 @@ func _spawn_pacman():
 	pacman.flip_input = flipped
 	pacman.died.connect(func():
 		pacman = null
+		death_sound.play()
 		GameManager.lose_health()
 		await get_tree().create_timer(1.0).timeout
-		_spawn_pacman()
+		_respawn_characters()
 	)
 	tilemap.add_child(pacman)
+
+func _respawn_characters():
+	_spawn_pacman()
+	blinky.reset_position()
+	pinky.reset_position()
+	inky.reset_position()
+	clyde.reset_position()
+	release_timer.start()
+	
+	await get_tree().create_timer(2.0).timeout
+	blinky.move = true
+	release_timer.start()
 
 func _on_release_ghost_timer_timeout():
 	if not pinky.move:

@@ -22,7 +22,11 @@ func restore():
 func collect():
 	collected.emit()
 	GameManager.add_pacman_score(5)
+	_play_sound()
 	queue_free()
+
+func _play_sound():
+	SoundManager.score_pacman_point()
 
 func _process(delta):
 	if moving != null or not enable_move:
@@ -43,3 +47,4 @@ func _move(dir):
 
 func _possible_dirs():
 	return tilemap.possible_dir(position).filter(func(d): return return_dir == null or Vector2(d) != Vector2(return_dir))
+

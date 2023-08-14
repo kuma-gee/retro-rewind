@@ -7,9 +7,12 @@ signal out_of_bound
 @export var speed := 300
 @export var spin_angle := PI/8
 
+@onready var audio := $AudioStreamPlayer
 @onready var current_speed = speed
 
+var play_sound = false
 var motion := Vector2.ZERO
+var remove = false
 
 func start_move():
 	var angle = randf_range(-PI/4, PI/4)
@@ -30,6 +33,9 @@ func _physics_process(_delta):
 		current_speed *= 1.01
 		current_speed = min(current_speed, max_speed)
 		
+		if play_sound:
+			audio.play()
+		
 		var collider = collision.get_collider()
 		if collider is BreakoutBlock:
 			collider.remove_block()
@@ -42,4 +48,12 @@ func _physics_process(_delta):
 
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	out_of_bound.emit()
-	queue_free()
+	if audio.playing:
+		remove = true
+	else:
+		queue_free()
+
+
+func _on_audio_stream_player_finished():
+	if remove:
+		queue_free()

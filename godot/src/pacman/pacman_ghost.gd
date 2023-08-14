@@ -14,6 +14,7 @@ extends CharacterBody2D
 @onready var collision := $CollisionShape2D
 @onready var sprite := $Sprite2D
 @onready var orig_modulate = sprite.modulate
+@onready var orig_pos = global_position
 
 var current_modulate = null
 var moving
@@ -52,6 +53,9 @@ func _set_catchable(c):
 		catchable = false
 		fleeing = false
 		current_modulate = orig_modulate
+
+func reset_position():
+	move = false
 
 func blink():
 	if catchable and not return_spawn:
@@ -112,6 +116,7 @@ func _process(_delta):
 		_do_blink()
 	
 	if not move:
+		global_position = orig_pos
 		return
 	
 	if moving != null:

@@ -16,6 +16,7 @@ var spawned_ball
 
 var ball_position
 var ball_motion
+var ball_sound = false
 
 var active_ball
 var motion = 0
@@ -30,6 +31,7 @@ func _spawn_ball():
 		GameManager.lose_health()
 		timer.start()
 	)
+	active_ball.global_position = ball_remote.global_position
 	get_tree().current_scene.add_child(active_ball)
 	
 	if ball_position == null:
@@ -44,9 +46,11 @@ func _process(delta):
 	if spawned_ball:
 		ball_position = spawned_ball.global_position
 		ball_motion = spawned_ball.motion
+		ball_sound = spawned_ball.play_sound
 	else:
 		ball_position = null
 		ball_motion = null
+		ball_sound = false
 
 func _physics_process(delta):
 	motion = input.get_action_strength("move_right") - input.get_action_strength("move_left")
@@ -60,6 +64,7 @@ func _on_input_just_pressed(ev: InputEvent):
 	if ev.is_action_pressed("shot") and active_ball:
 		ball_remote.remote_path = NodePath()
 		active_ball.start_move()
+		active_ball.play_sound = true
 		
 		spawned_ball = active_ball
 		active_ball = null

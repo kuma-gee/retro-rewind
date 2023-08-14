@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://db3xb7nl00n4c"]
+[gd_scene load_steps=14 format=3 uid="uid://db3xb7nl00n4c"]
 
 [ext_resource type="Script" path="res://src/pacman/pacman_game.gd" id="1_f8w1g"]
 [ext_resource type="Texture2D" uid="uid://c2yt8wjtk8mlr" path="res://assets/Tiles.png" id="1_odsj4"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bkoohkb4probt" path="res://src/pacman/pacman_ghost.tscn" id="6_bjopi"]
 [ext_resource type="PackedScene" uid="uid://7fl2mknw74t5" path="res://src/pacman/clyde.tscn" id="7_u03jm"]
 [ext_resource type="Script" path="res://addons/save-system/CacheProperties.gd" id="8_4gmrs"]
+[ext_resource type="AudioStream" uid="uid://y5jsphcur4rl" path="res://assets/death.wav" id="10_671nx"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_qjhuo"]
 vertices = PackedVector2Array(-4, -4, 4, -4, 4, 4, -4, 4)
@@ -544,7 +545,6 @@ scale = Vector2(0.416667, 0.416667)
 z_index = 1
 position = Vector2(76.8333, 68.3333)
 spawn_pos = NodePath("../GhostSpawn")
-move = true
 tilemap = NodePath("..")
 
 [node name="Sprite2D" parent="TileMap/Blinky" index="2"]
@@ -578,7 +578,7 @@ tilemap = NodePath("..")
 look_ahead = 1
 
 [node name="ReleaseGhostTimer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 4.0
 autostart = true
 
 [node name="Cache" type="Node" parent="."]
@@ -592,6 +592,10 @@ one_shot = true
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(160, 120)
 ignore_rotation = false
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_671nx")
+volume_db = -10.0
 
 [connection signal="timeout" from="ReleaseGhostTimer" to="." method="_on_release_ghost_timer_timeout"]
 [connection signal="timeout" from="PowerupTimer" to="." method="_on_powerup_timer_timeout"]
