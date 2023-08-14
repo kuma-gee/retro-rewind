@@ -18,6 +18,7 @@ enum Game {
 
 @onready var frame_freeze := $FrameFreeze
 @onready var glitch_timer := $GlitchTimer
+@onready var glitch_sound := $GlitchSound
 
 
 var health := 0 : set = _set_health 
@@ -155,6 +156,7 @@ func glitch(callback: Callable, start_timer = false):
 	glitch_tween.finished.connect(func():
 		if gameover: return
 		
+		glitch_sound.stop()
 		var wait_time = callback.call()
 		_reset_glitch()
 		get_tree().paused = true
@@ -168,11 +170,16 @@ func _reset_glitch():
 	var mat = screen.material as ShaderMaterial
 	mat.set_shader_parameter("enable_glitch", false)
 	mat.set_shader_parameter("glitch_time", 0.5)
+	glitch_sound.playing = false
 
-func _set_glitch_time(time):
+func _set_glitch_time(time: float):
 	var mat = screen.material as ShaderMaterial
 	mat.set_shader_parameter("enable_glitch", true)
 	mat.set_shader_parameter("glitch_time", time)
+	
+	var playing = int(floor(time)) % 2 == 1
+	if glitch_sound.playing != playing:
+		glitch_sound.playing = playing
 	
 
 func _on_glitch_timer_timeout():
