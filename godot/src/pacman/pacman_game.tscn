@@ -549,6 +549,7 @@ z_index = 1
 position = Vector2(76.8333, 68.3333)
 spawn_pos = NodePath("../GhostSpawn")
 tilemap = NodePath("..")
+look_range = 300
 
 [node name="Sprite2D" parent="TileMap/Blinky" index="2"]
 modulate = Color(1, 0.180392, 0.180392, 1)
@@ -569,6 +570,7 @@ position = Vector2(67.6667, 84.1667)
 spawn_pos = NodePath("../GhostSpawn")
 tilemap = NodePath("..")
 look_ahead = 10
+look_range = 80
 
 [node name="Sprite2D" parent="TileMap/Inky" index="2"]
 modulate = Color(0, 0.85098, 1, 1)
@@ -579,6 +581,7 @@ position = Vector2(86, 84.1667)
 spawn_pos = NodePath("../GhostSpawn")
 tilemap = NodePath("..")
 look_ahead = 1
+look_range = 150
 
 [node name="ColorRect" type="ColorRect" parent="TileMap"]
 offset_left = 70.0

@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var tilemap: PacmanMap
 @export var fleeing = false
 @export var look_ahead = 0
+@export var look_range := 100
 
 @onready var pupil_left := $EyeLeft/Pupil
 @onready var pupil_right := $EyeRight/Pupil
@@ -100,6 +101,9 @@ func _get_target():
 	
 	var pac = player as Pacman
 	var target = pac.global_position
+	
+	if global_position.distance_to(target) >= look_range:
+		return [null, null]
 	
 	if look_ahead > 0:
 		var ahead = _get_ahead_dir(pac.position, pac.motion)
@@ -216,13 +220,13 @@ func _move(dir):
 	moving = tilemap.do_move(self, dir, func(): moving = null, speed, true)
 	return_dir = -dir
 
-#func _draw():
-#	if local_paths.size() > 0:
-#		var start = local_paths[0]
-#		for i in range(1, local_paths.size()):
-#			var end = local_paths[i]
-#			draw_line(start, end, Color.RED, 2)
-#			start = end
+func _draw():
+	if local_paths.size() > 0:
+		var start = local_paths[0]
+		for i in range(1, local_paths.size()):
+			var end = local_paths[i]
+			draw_line(start, end, Color.RED, 2)
+			start = end
 
 
 func _on_area_2d_body_entered(body):
